@@ -8,13 +8,13 @@ import com.icpak.rest.models.event.Booking;
 
 public class BookingsDao extends BaseDao {
 
-	public Booking getByBookingId(String bookingId) {
+	public Booking getByBookingId(String refId) {
 		
 		Booking booking = getSingleResultOrNull(getEntityManager().createQuery(
-				"from Booking u where u.bookingId=:bookingId").setParameter("bookingId",
-				bookingId));
+				"from Booking u where u.refId=:refId").setParameter("refId",
+				refId));
 		if(booking==null){
-			throw new ServiceException(ErrorCodes.NOTFOUND, "Booking", "'"+bookingId+"'");
+			throw new ServiceException(ErrorCodes.NOTFOUND, "Booking", "'"+refId+"'");
 		}
 		return booking;
 	}

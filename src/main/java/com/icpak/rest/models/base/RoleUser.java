@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import com.icpak.rest.models.auth.Role;
+import com.icpak.rest.models.auth.User;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({User.class, Role.class})

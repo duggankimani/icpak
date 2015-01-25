@@ -16,6 +16,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.hibernate.annotations.Index;
+
+import com.icpak.rest.IDUtils;
 
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,6 +35,10 @@ public abstract class PO extends ResourceModel implements Serializable{
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Column(nullable=false, unique=true, updatable=false, length=45)
+    @Index(name="idx_ref_id")
+	protected String refId;
 
 	@XmlTransient
 	@Column
@@ -98,11 +105,15 @@ public abstract class PO extends ResourceModel implements Serializable{
 	@PrePersist
 	public void onPrePersist(){
 		this.created=new Date();
+		
 		Subject subject = SecurityUtils.getSubject();
 		if(subject.getPrincipal()!=null){
 			this.createdBy = subject.getPrincipal().toString();
 		}
 		
+		if(refId==null){
+			refId = IDUtils.generateId();
+		}
 	}
 	
 	@PreUpdate
@@ -136,5 +147,13 @@ public abstract class PO extends ResourceModel implements Serializable{
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getRefId() {
+		return refId;
+	}
+
+	public void setRefId(String refId) {
+		this.refId = refId;
 	}
 }

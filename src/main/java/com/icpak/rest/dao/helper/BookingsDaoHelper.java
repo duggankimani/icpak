@@ -14,8 +14,8 @@ import com.icpak.rest.dao.EventsDao;
 import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.ResourceCollectionModel;
-import com.icpak.rest.models.base.User;
 import com.icpak.rest.models.event.Booking;
 
 @Transactional
@@ -35,9 +35,9 @@ public class BookingsDaoHelper {
 		List<Booking> clones = new ArrayList<>();
 		for(Booking booking: list){
 			Booking clone = booking.clone();
-			clone.setUri(uriInfo.getAbsolutePath()+"/"+clone.getBookingId());
-			clone.getEvent().setUri(uriInfo.getBaseUri()+"events/"+clone.getEvent().getEventId());
-			clone.getUser().setUri(uriInfo.getBaseUri()+"users/"+clone.getUser().getUserId());
+			clone.setUri(uriInfo.getAbsolutePath()+"/"+clone.getRefId());
+			clone.getEvent().setUri(uriInfo.getBaseUri()+"events/"+clone.getEvent().getRefId());
+			//clone.getUser().setUri(uriInfo.getBaseUri()+"users/"+clone.getUser().getRefId());
 			clones.add(clone);
 		}
 		
@@ -53,21 +53,21 @@ public class BookingsDaoHelper {
 	}
 	
 	public Booking createBooking(String eventId,Booking booking) {
-		assert booking.getBookingId()==null;
+		assert booking.getRefId()==null;
 		
-		booking.setBookingId(IDUtils.generateId());
+		booking.setRefId(IDUtils.generateId());
 		booking.setBookingDate(new Date());
 //		booking.setPaymentDate(booking.getPaymentDate());
 //		booking.setPaymentRef(booking.getPaymentRef());
 		booking.setStatus(booking.getStatus());
 		
-		if(booking.getUser()==null || booking.getUser().getUserId()==null ){
-			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "User", "UserId=null");
-		}
+//		if(booking.getUser()==null || booking.getUser().getRefId()==null ){
+//			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "User", "UserId=null");
+//		}
 		
-		String userId = booking.getUser().getUserId();
-		User user = userDao.findByUserId(userId, true);
-		booking.setUser(user);
+//		String userId = booking.getUser().getRefId();
+//		User user = userDao.findByUserId(userId, true);
+//		booking.setUser(user);
 		
 		booking.setEvent(eventDao.getByEventId(eventId));
 		dao.save(booking);
@@ -78,7 +78,7 @@ public class BookingsDaoHelper {
 	}
 
 	public Booking updateBooking(String eventId,String bookingId, Booking booking) {
-		assert booking.getBookingId()!=null;
+		assert booking.getRefId()!=null;
 		
 		Booking poBooking = getBookingById(eventId,bookingId);
 		poBooking.setBookingDate(booking.getBookingDate());
@@ -86,18 +86,18 @@ public class BookingsDaoHelper {
 //		poBooking.setPaymentRef(booking.getPaymentRef());
 		poBooking.setStatus(booking.getStatus());
 		
-		if(booking.getUser()==null || booking.getUser().getUserId()==null ){
-			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "User", "UserId=null");
-		}
+//		if(booking.getUser()==null || booking.getUser().getRefId()==null ){
+//			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "User", "UserId=null");
+//		}
 		
-		if(booking.getUser().getUserId()==null){
-			String userId = booking.getUser().getUserId();
-			User user = userDao.findByUserId(userId, true);
-			poBooking.setUser(user);
-		}
+//		if(booking.getUser().getRefId()==null){
+//			String userId = booking.getUser().getRefId();
+//			User user = userDao.findByUserId(userId, true);
+//			poBooking.setUser(user);
+//		}
 		
 		poBooking.setEvent(eventDao.getByEventId(eventId));
-		poBooking.setBookingId(booking.getBookingId());
+		poBooking.setRefId(booking.getRefId());
 		dao.save(poBooking);
 		
 		return poBooking.clone();

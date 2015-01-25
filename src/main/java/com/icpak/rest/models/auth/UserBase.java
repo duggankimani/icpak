@@ -1,4 +1,4 @@
-package com.icpak.rest.models.base;
+package com.icpak.rest.models.auth;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Index;
 
+import com.icpak.rest.models.base.PO;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @XmlType
@@ -36,15 +37,6 @@ public class UserBase extends PO{
     @Basic(optional=false)
     @Column(length=255)
     private String password;
-    
-    @Column(length=255)
-    private String firstName;
-    
-    @Column(length=255)
-	private String lastName;
-
-    @Column(length=255)
-	private String userId;
 
 	public String getUsername() {
 		return username;
@@ -68,30 +60,6 @@ public class UserBase extends PO{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 }

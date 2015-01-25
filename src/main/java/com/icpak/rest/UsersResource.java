@@ -18,7 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.google.inject.Inject;
 import com.icpak.rest.dao.helper.UsersDaoHelper;
-import com.icpak.rest.models.base.User;
+import com.icpak.rest.models.auth.User;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -81,7 +81,7 @@ public class UsersResource extends BaseResource<User> {
 
 		helper.add(user);
 		String uri = uriInfo.getAbsolutePath().toString() + "/"
-				+ user.getUserId();
+				+ user.getRefId();
 		return buildCreateEntityResponse(uri, user);
 	}
 

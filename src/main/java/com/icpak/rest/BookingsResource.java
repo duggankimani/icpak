@@ -46,8 +46,8 @@ public class BookingsResource extends BaseResource<Booking>{
 			@ApiParam(value="Booking Id of the booking to fetch", required=true) @PathParam("bookingId") String bookingId) {
 		
 		Booking booking = helper.getBookingById(eventId,bookingId);
-		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getEventId());
-		booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getUserId());
+		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getRefId());
+		//booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getRefId());
 		return buildGetEntityResponse(uriInfo.getAbsolutePath().toString(), booking);
 	}
 
@@ -60,9 +60,9 @@ public class BookingsResource extends BaseResource<Booking>{
 			Booking booking) {
 		
 		booking = helper.createBooking(eventId,booking);
-		String uri = uriInfo.getAbsolutePath()+"/"+booking.getBookingId();
-		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getEventId());
-		booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getUserId());
+		String uri = uriInfo.getAbsolutePath()+"/"+booking.getRefId();
+		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getRefId());
+//		booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getRefId());
 		
 		return buildCreateEntityResponse(uri, booking);
 	}
@@ -79,8 +79,8 @@ public class BookingsResource extends BaseResource<Booking>{
 			Booking booking) {
 		
 		booking = helper.updateBooking(eventId,bookingId, booking);
-		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getEventId());
-		booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getUserId());
+		booking.getEvent().setUri(uriInfo.getBaseUri()+"events/"+booking.getEvent().getRefId());
+//		booking.getUser().setUri(uriInfo.getBaseUri()+"users/"+booking.getUser().getRefId());
 		return buildUpdateEntityResponse(uriInfo.getAbsolutePath().toString(), booking);
 	}
 

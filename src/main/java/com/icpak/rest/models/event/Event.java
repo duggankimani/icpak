@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.icpak.rest.models.base.PO;
 import com.wordnik.swagger.annotations.ApiModel;
@@ -39,9 +38,6 @@ public class Event extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Column(length=45)
-	private String eventId;
-	
 	@Column(length=255, nullable=false)
 	private String name;
 	
@@ -55,9 +51,11 @@ public class Event extends PO{
 	
 	private Date endDate;
 	
+	private EventStatus status;
+	
 	@XmlTransient
 	@OneToMany(mappedBy="event")
-	Set<Booking> bookings;
+	Set<Booking> bookings=new HashSet<>();
 	
 	public Event() {
 	}
@@ -114,14 +112,6 @@ public class Event extends PO{
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
 	}
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
 	
 	public Event clone(String ... expand){
 		Event event = new Event();
@@ -129,7 +119,7 @@ public class Event extends PO{
 		event.setDescription(description);
 		event.setStartDate(startDate);
 		event.setStartDate(startDate);
-		event.setEventId(eventId);
+		event.setRefId(getRefId());
 		event.setName(name);
 		event.setVenue(venue);
 		
@@ -144,6 +134,14 @@ public class Event extends PO{
 		}
 		
 		return event;
+	}
+
+	public EventStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(EventStatus status) {
+		this.status = status;
 	}
 
 }

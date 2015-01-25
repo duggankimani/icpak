@@ -8,18 +8,18 @@ import com.icpak.rest.models.event.Event;
 
 public class EventsDao extends BaseDao {
 
-	public Event getByEventId(String eventId) {
-		return getByEventId(eventId, true);
+	public Event getByEventId(String refId) {
+		return getByEventId(refId, true);
 	}
 	
-	public Event getByEventId(String eventId, boolean throwExceptionIfNull) {
+	public Event getByEventId(String refId, boolean throwExceptionIfNull) {
 		
 		Event event = getSingleResultOrNull(getEntityManager().createQuery(
-				"from Event u where u.eventId=:eventId").setParameter("eventId",
-				eventId));
+				"from Event u where u.refId=:refId").setParameter("refId",
+				refId));
 		
 		if(throwExceptionIfNull && event==null){
-			throw new ServiceException(ErrorCodes.NOTFOUND, "Event", "'"+eventId+"'");
+			throw new ServiceException(ErrorCodes.NOTFOUND, "Event", "'"+refId+"'");
 		}
 		
 		return event;

@@ -16,12 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.icpak.rest.models.base;
+package com.icpak.rest.models.auth;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
+import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.event.Booking;
+import com.icpak.rest.models.membership.Member;
 import com.wordnik.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -61,11 +64,13 @@ public class User extends UserBase{
     @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
     private Set<Role> roles = new HashSet<Role>();
     
-    @OneToMany(mappedBy="user")
-    private Set<Booking> bookings = new HashSet<>();
+    @OneToOne(mappedBy="user", 
+    		cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.MERGE})
+    private UserData userData=null;
     
-    @Embedded
-    private Member member;
+    @OneToOne
+    @JoinColumn(name="memberid")
+    private Member member; //A system user can be a member of ICPAK
     
     public User() {
 	}
@@ -78,14 +83,6 @@ public class User extends UserBase{
         this.roles = roles;
     }
 
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
 	public void addRole(Role role) {
 		roles.add(role);
 	}
@@ -96,7 +93,7 @@ public class User extends UserBase{
 	
 	public User clone(String...expand){
 		User user = new User();
-		user.setUserId(getUserId());
+		user.setRefId(refId);
 		user.setUsername(getUsername());
 		
 		if(expand!=null){
@@ -108,13 +105,13 @@ public class User extends UserBase{
 //				}
 				
 				if(token.toUpperCase().equals(ExpandTokens.DETAIL.name())){
-					user.setLastName(getLastName());
-					user.setFirstName(getFirstName());
+//					user.setLastName(getLastName());
+//					user.setFirstName(getFirstName());
 					user.setEmail(getEmail());
 				}
 				
 				if(token.equals("member")){
-					user.setMember(member);
+					//user.setMember(member);
 				}
 				
 				if(token.equals("roles")){
@@ -125,6 +122,36 @@ public class User extends UserBase{
 			}
 		}
 		return user;
+	}
+
+	public UserData getUserData() {
+		return userData;
+	}
+
+	public void setUserData(UserData userData) {
+		this.userData = userData;
+	}
+	
+	@PreUpdate
+	@PrePersist
+	public void updateUserDataRef(){
+		if(refId==null && member!=null){
+			setRefId(member.getRefId());
+		}
+	}
+
+	public void copy(User user) {
+		setEmail(user.getEmail());
+		setPassword(user.getPassword());
+		setUsername(user.getUsername());
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 }

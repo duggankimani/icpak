@@ -27,7 +27,7 @@ public class EventsDaoHelper {
 		
 		for(Event e : list){
 			Event event = e.clone();
-			e.setUri(uriInfo.getAbsolutePath().toString()+"/"+event.getEventId());
+			e.setUri(uriInfo.getAbsolutePath().toString()+"/"+event.getRefId());
 			eventsList.add(e);
 		}
 		events.setItems(eventsList);
@@ -43,20 +43,20 @@ public class EventsDaoHelper {
 	
 	public void createEvent(Event event) {
 		
-		assert event.getEventId()==null;
-		event.setEventId(IDUtils.generateId());
+		assert event.getRefId()==null;
+		event.setRefId(IDUtils.generateId());
 		dao.save(event);
 		
 		assert event.getId()!=null;
 	}
 
 	public void updateEvent(String eventId, Event event) {
-		assert event.getEventId()!=null;
+		assert event.getRefId()!=null;
 		
 		Event poEvent = getEventById(eventId);
 		poEvent.setDescription(event.getDescription());
 		poEvent.setName(event.getName());
-		poEvent.setEventId(event.getEventId());
+		poEvent.setRefId(event.getRefId());
 		dao.save(poEvent);
 	}
 

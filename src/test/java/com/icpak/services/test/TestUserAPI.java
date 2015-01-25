@@ -1,4 +1,4 @@
-package com.icpak.test;
+package com.icpak.services.test;
 
 import java.io.IOException;
 
@@ -15,12 +15,18 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class TestUserAPI extends TestBootstrap {
 
+	public TestUserAPI() {
+		
+	}
+	
 	@Test
 	public void testGetAll() throws IOException {
+		
 		Client client = Client.create(new DefaultClientConfig());
-		WebResource service = client.resource(getBaseURI());
-
-		ClientResponse resp = service.path("api").path("users")
+		WebResource service = client.resource(BASE_URI+"icpak");
+		System.err.println("## >>> "+BASE_URI+"icpak");
+		
+		ClientResponse resp = service.path("/api").path("/users")
 				.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
 		String text = resp.getEntity(String.class);

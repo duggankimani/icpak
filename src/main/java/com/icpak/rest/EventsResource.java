@@ -60,7 +60,7 @@ public class EventsResource extends BaseResource<Event>{
 	public Response create(@Context UriInfo uriInfo, Event event) {
 		
 		helper.createEvent(event);
-		String uri = uriInfo.getAbsolutePath().toString()+"/"+event.getEventId();
+		String uri = uriInfo.getAbsolutePath().toString()+"/"+event.getRefId();
 		return buildCreateEntityResponse(uri, event);
 	}
 

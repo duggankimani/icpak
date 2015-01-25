@@ -11,7 +11,9 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import com.icpak.rest.BaseResource;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.event.Event;
+import com.icpak.rest.models.membership.Member;
 
 /**
  * Model for all Collection returns 

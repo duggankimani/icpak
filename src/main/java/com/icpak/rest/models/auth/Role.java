@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.icpak.rest.models.base;
+package com.icpak.rest.models.auth;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,6 +28,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,6 +41,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
+import com.icpak.rest.models.base.PO;
 import com.wordnik.swagger.annotations.ApiModel;
 
 /**
@@ -58,10 +61,6 @@ public class Role extends PO{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-    @Column(nullable=false, unique=true, updatable=false)
-    @Index(name="idx_role_roleid")
-    private String roleId; 
     
     @Basic(optional=false)
     @Column(length=100, unique=true,nullable=false)
@@ -73,8 +72,10 @@ public class Role extends PO{
     private String description;
 
     @ElementCollection(fetch=FetchType.LAZY)
-    @CollectionTable(name="role_permission")
+    @CollectionTable(name="role_permission", joinColumns=
+    		@JoinColumn(name="roleid", referencedColumnName="id"))
     @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+    @Column(name="permission")
     private Set<String> permissions = new HashSet<>();
     
     @ManyToMany(fetch=FetchType.LAZY)
@@ -112,14 +113,6 @@ public class Role extends PO{
         this.permissions = permissions;
     }
 
-	public String getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
-
 	public void addUser(User user) {
 		users.add(user);
 	}
@@ -132,13 +125,13 @@ public class Role extends PO{
 		
 		Role other = (Role)obj;
 		
-		return other.roleId.equals(roleId);
+		return other.getRefId().equals(getRefId());
 	}
 	
 	public Role clone(String ... expand){
 		
 		Role role = new Role();
-		role.setRoleId(roleId);
+		role.setRefId(getRefId());
 		role.setName(name);
 		
 		if(expand!=null){
@@ -158,7 +151,7 @@ public class Role extends PO{
 	}
 
 	public void addPermission(Permission permission) {
-		permissions.add(permission.name());
+		permissions.add(permission.getName());
 	}
 
 	public void removePermission(Permission permission) {

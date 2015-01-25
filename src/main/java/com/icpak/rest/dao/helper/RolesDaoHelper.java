@@ -5,15 +5,16 @@ import javax.ws.rs.core.UriInfo;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.icpak.rest.IDUtils;
+import com.icpak.rest.dao.PermissionDao;
 import com.icpak.rest.dao.RolesDao;
 import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
-import com.icpak.rest.models.base.Permission;
+import com.icpak.rest.models.auth.Permission;
+import com.icpak.rest.models.auth.Role;
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.ResourceCollectionModel;
-import com.icpak.rest.models.base.Role;
 import com.icpak.rest.models.base.RoleUser;
-import com.icpak.rest.models.base.User;
 
 @Transactional
 public class RolesDaoHelper {
@@ -21,6 +22,7 @@ public class RolesDaoHelper {
 	@Inject RolesDao dao;
 	@Inject UsersDaoHelper userDaoHelper;
 	@Inject UsersDao userDao;
+	@Inject PermissionDao permissionDao;
 	
 	public ResourceCollectionModel<Role> getAllRoles(UriInfo uriInfo, Integer offset,
 			Integer limit) {
@@ -50,34 +52,22 @@ public class RolesDaoHelper {
 
 	
 	public void createRole(Role role) {
-		assert role.getRoleId()==null;
+		assert role.getRefId()==null;
 		
-		role.setRoleId(IDUtils.generateId());
-		if(role.getPermissions()!=null)
-			for(String permission:role.getPermissions()){
-				//Validate the permissions provided
-				//Permission Must exist to be assigned
-				Permission perm = Permission.get(permission);
-			}
+		role.setRefId(IDUtils.generateId());
 		dao.save(role);
 		
 		assert role.getId()!=null;
 	}
 
 	public Role updateRole(String roleId, Role role) {
-		assert role.getRoleId()!=null;
+		assert role.getRefId()!=null;
 		
 		Role poRole = getRoleById(roleId);
 		
 		poRole.setDescription(role.getDescription());
 		poRole.setName(role.getName());
-		
-		if(role.getPermissions()!=null)
-		for(String permission:role.getPermissions()){
-			poRole.addPermission(Permission.get(permission));
-		}
-		
-		poRole.setRoleId(roleId);
+		poRole.setRefId(roleId);
 		
 		dao.save(poRole);
 		return poRole;
@@ -123,7 +113,7 @@ public class RolesDaoHelper {
 	public Role setPermission(String roleId, String permissionName) {
 		
 		Role role = dao.getByRoleId(roleId);
-		Permission permission = Permission.get(permissionName.toUpperCase());
+		Permission permission = permissionDao.getPermissionByName(permissionName);
 		role.addPermission(permission);
 		
 		dao.save(role);
@@ -133,7 +123,7 @@ public class RolesDaoHelper {
 
 	public void deletePermission(String roleId, String permissionName) {
 		//Role role = dao.getByRoleId(roleId);
-		Permission permission = Permission.get(permissionName.toUpperCase());
+		Permission permission = permissionDao.getPermissionByName(permissionName.toUpperCase());
 		dao.deletePermission(roleId, permission);
 	}	
 

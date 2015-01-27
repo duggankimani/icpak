@@ -1,6 +1,5 @@
 package com.icpak.rest.models.membership;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -237,6 +236,28 @@ public class AuditLicenseApplicationDetails extends PO{
 
 	public void setPracticeId(String practiceId) {
 		this.practiceId = practiceId;
+	}
+
+	public void copy(AuditLicenseApplicationDetails auditDetails) {
+		setAnnualAuditFees(auditDetails.getAnnualAuditFees());
+		setComplianceAntiMoneyLaudering(auditDetails.getComplianceAntiMoneyLaudering());
+		setComplianceCPD(auditDetails.getComplianceCPD());
+		setComplianceIdenmnity(auditDetails.getComplianceIdenmnity());
+		setComplianceNoDisplinaryIssues(auditDetails.getComplianceNoDisplinaryIssues());
+		setIsICPAKReviewDone(auditDetails.getIsICPAKReviewDone());
+		setIsMemberOfOtherProfessionalFirms(auditDetails.getIsMemberOfOtherProfessionalFirms());
+		setIsNonPractice(auditDetails.getIsNonPractice());
+		setLastICPAKAuditDate(auditDetails.getLastICPAKAuditDate());
+		setMemberShipStatus(auditDetails.getMemberShipStatus());
+		setNonPracticeReason(auditDetails.getNonPracticeReason());
+		setOtherProfessionalBodies(auditDetails.getOtherProfessionalBodies());
+		setPracticeId(auditDetails.getPracticeId());
+		setPreferredReviewQtr(auditDetails.getPreferredReviewQtr());
+		setPropAnnualFeesAudit(auditDetails.getPropAnnualFeesAudit());
+		setReviewIssued(auditDetails.getReviewIssued());
+		setStaffCount(auditDetails.getStaffCount());
+		setTopFiveAuditFeesProp(auditDetails.getTopFiveAuditFeesProp());
+
 	}
 	
 }

@@ -111,7 +111,7 @@ public class RoleResource extends BaseResource<Role> {
 	 *
 	 */
 	@Api(value="", description="Roles permissions resource")
-	class RolePermissionsResource extends BaseResource<Role>{
+	public static class RolePermissionsResource extends BaseResource<Role>{
 
 		@Inject RolesDaoHelper helper;
 		
@@ -168,7 +168,7 @@ public class RoleResource extends BaseResource<Role> {
 	 *
 	 */
 	@Api(value="", description="Roles assignees resource")
-	public class RoleAssigneesResource extends BaseResource<RoleUser> {
+	public static class RoleAssigneesResource extends BaseResource<RoleUser> {
 
 		@Inject
 		UsersDaoHelper userHelper;

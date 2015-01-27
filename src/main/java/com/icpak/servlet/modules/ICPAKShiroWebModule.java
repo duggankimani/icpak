@@ -17,7 +17,8 @@ public class ICPAKShiroWebModule extends ShiroWebModule{
        	bindRealm().to(ICPAKAuthenticatingRealm.class);
 
         addFilterChain("/logout", LOGOUT);
-		addFilterChain("/api/**", AUTHC_BASIC);
+		//addFilterChain("/api/**", AUTHC_BASIC);
+        addFilterChain("/api/**", ANON);
 		addFilterChain("/**", ANON);
     }
 

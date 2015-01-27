@@ -36,6 +36,7 @@ public abstract class PO extends ResourceModel implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
+	@XmlTransient
 	@Column(nullable=false, unique=true, updatable=false, length=45)
     @Index(name="idx_ref_id")
 	protected String refId;

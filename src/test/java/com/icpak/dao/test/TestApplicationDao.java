@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;
-import com.icpak.rest.dao.helper.ApplicationDaoHelper;
+import com.icpak.rest.dao.helper.ApplicationsDaoHelper;
 import com.icpak.rest.dao.helper.MemberDaoHelper;
 import com.icpak.rest.models.auth.Gender;
 import com.icpak.rest.models.auth.User;
@@ -19,6 +19,7 @@ import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.Application;
 import com.icpak.rest.models.membership.ApplicationStatus;
 import com.icpak.rest.models.membership.ApplicationType;
+import com.icpak.rest.models.membership.AuditLicenseApplicationDetails;
 import com.icpak.rest.models.membership.IndustrySector;
 import com.icpak.rest.models.membership.Member;
 import com.icpak.rest.models.membership.MemberType;
@@ -27,7 +28,7 @@ import com.icpak.rest.models.membership.MembershipStatus;
 public class TestApplicationDao extends AbstractDaoTest{
 
 	@Inject MemberDaoHelper memberHelper;
-	@Inject ApplicationDaoHelper applicationHelper;
+	@Inject ApplicationsDaoHelper applicationHelper;
 	
 	String memberId;
 	String applicationId1;
@@ -85,6 +86,12 @@ public class TestApplicationDao extends AbstractDaoTest{
 		application.setLicenceCollectedOrDispatched(null);
 		application.setSubmissionDate(new Date());
 		application.setMember(new Member(memberId));
+		
+		AuditLicenseApplicationDetails details = new AuditLicenseApplicationDetails();
+		details.setAnnualAuditFees(5);
+		details.setIsICPAKReviewDone(1);
+		
+		application.setAuditDetails(details);
 		applicationHelper.updateApplication(applicationId2,application);
 	}
 	

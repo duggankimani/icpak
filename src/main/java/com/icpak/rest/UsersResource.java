@@ -14,8 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-
 import com.google.inject.Inject;
 import com.icpak.rest.dao.helper.UsersDaoHelper;
 import com.icpak.rest.models.auth.User;
@@ -40,7 +38,7 @@ import com.wordnik.swagger.annotations.ApiParam;
  * @author duggan
  *
  */
-@RequiresAuthentication
+//@RequiresAuthentication
 @Path("users")
 @Api(value = "users", description = "Handles CRUD on User data")
 public class UsersResource extends BaseResource<User> {

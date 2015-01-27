@@ -6,19 +6,16 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.hibernate.annotations.Index;
 
 import com.icpak.rest.models.base.PO;
-import com.icpak.rest.models.event.Event;
 import com.wordnik.swagger.annotations.ApiModel;
 
 @ApiModel(value="Permission Model", description="Represents an assignable Permission")
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Event.class, User.class})
 
 @Entity
 @Table(name="permission")
@@ -54,5 +51,13 @@ public class Permission extends PO{
 	@Override
 	public String toString() {
 		return "{name:"+name+",description:"+description+",permissionid:"+refId+"}";
+	}
+	
+	public Permission clone(String ... token){
+		Permission permission = new Permission();
+		permission.setName(name);
+		permission.setDescription(description);
+		
+		return permission;
 	}
 }

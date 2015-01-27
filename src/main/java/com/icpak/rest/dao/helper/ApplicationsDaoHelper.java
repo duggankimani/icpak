@@ -16,7 +16,7 @@ import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.Application;
 
 @Transactional
-public class ApplicationDaoHelper {
+public class ApplicationsDaoHelper {
 
 	
 	@Inject ApplicationDao applicationDao;
@@ -43,7 +43,13 @@ public class ApplicationDaoHelper {
 		po.setApplicationNo(application.getApplicationNo());
 		po.setApplicationType(application.getApplicationType());
 		po.setApprovalMinNo(application.getApprovalMinNo());
-		po.setAuditDetails(application.getAuditDetails());
+		
+		if(po.getAuditDetails()==null){
+			po.setAuditDetails(application.getAuditDetails());
+		}else{
+			po.getAuditDetails().copy(application.getAuditDetails());
+		}
+		
 		po.setDateAcknowledge(application.getDateAcknowledge());
 		po.setDateNotificationSent(application.getDateNotificationSent());
 		po.setDateReceived(application.getDateReceived());

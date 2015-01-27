@@ -40,18 +40,14 @@ public class Event extends PO{
 	
 	@Column(length=255, nullable=false)
 	private String name;
-	
 	@Column(length=5000)
 	private String description;
-	
 	@Column(length=255)
 	private String venue;
-	
 	private Date startDate;
-	
 	private Date endDate;
-	
 	private EventStatus status;
+	private EventType type;
 	
 	@XmlTransient
 	@OneToMany(mappedBy="event")
@@ -142,6 +138,14 @@ public class Event extends PO{
 
 	public void setStatus(EventStatus status) {
 		this.status = status;
+	}
+
+	public EventType getType() {
+		return type;
+	}
+
+	public void setType(EventType type) {
+		this.type = type;
 	}
 
 }

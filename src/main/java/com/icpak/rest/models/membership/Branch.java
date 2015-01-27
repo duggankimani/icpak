@@ -88,4 +88,8 @@ public class Branch extends PO{
 	public void setPractice(Practice practice) {
 		this.practice = practice;
 	}
+
+	public Branch clone(String ... tokens){
+		return this;
+	}
 }

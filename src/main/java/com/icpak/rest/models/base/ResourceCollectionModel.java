@@ -85,7 +85,7 @@ public class ResourceCollectionModel<T extends ResourceModel> extends ResourceMo
 
 	public void setItems(List<T> items) {
 		if(items==null || items.isEmpty()){
-			items = null;
+			this.items = null;
 			return;
 		}
 		this.items = items;

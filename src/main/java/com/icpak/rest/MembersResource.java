@@ -44,7 +44,7 @@ public class MembersResource extends BaseResource<User> {
 	}
 
 	@GET
-	@Path("/{userId}")
+	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Get a user by userId", response = User.class, consumes = MediaType.APPLICATION_JSON)
 	public Response getById(
@@ -69,7 +69,7 @@ public class MembersResource extends BaseResource<User> {
 	}
 
 	@PUT
-	@Path("/{userId}")
+	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Update an existing user", response = User.class, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
@@ -84,7 +84,7 @@ public class MembersResource extends BaseResource<User> {
 	}
 
 	@DELETE
-	@Path("/{userId}")
+	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Delete an existing user")
 	public Response delete(

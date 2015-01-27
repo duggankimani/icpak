@@ -1,6 +1,8 @@
 package com.icpak.rest.dao.helper;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -26,7 +28,16 @@ public class PermissionsDaoHelper {
 
 		int count = dao.getPermissionCount();
 		ResourceCollectionModel<Permission> permissions = new ResourceCollectionModel<>(offset,limit,count ,uriInfo);
-		permissions.setItems(dao.getAllPermissions(offset, limit));
+		
+		List<Permission> list = new ArrayList<>();
+		for(Permission p: dao.getAllPermissions(offset, limit)){
+			Permission permission = new Permission();
+			permission.setName(p.getName()+"Test Name");
+			permission.setDescription(p.getDescription()+"Test Desc");
+			permission.setUri(uriInfo.getAbsolutePath().toString()+"/"+p.getRefId());
+			list.add(permission);
+		}
+		permissions.setItems(list);
 		
 		return permissions;
 	}
@@ -85,10 +96,15 @@ public class PermissionsDaoHelper {
 			Integer offset, Integer limit) {
 		
 		int count = roleDao.getRoleCount(dao.getByPermissionId(permissionId, true));
-		ResourceCollectionModel<Role> roles = new ResourceCollectionModel<>(offset,limit,count ,uriInfo);
-		roles.setItems(roleDao.getAllRoles(dao.getByPermissionId(permissionId, true),offset, limit));
+		ResourceCollectionModel<Role> roleCollection = new ResourceCollectionModel<>(offset,limit,count ,uriInfo);
 		
-		return roles;
+		List<Role> roles = roleDao.getAllRoles(dao.getByPermissionId(permissionId, true),offset, limit);
+		for(Role role: roles){
+			role.clone();
+		}
+		roleCollection.setItems(roles);
+		
+		return roleCollection;
 	}
 
 	public Permission setPermission(String permissionId, Collection<String> roleIds) {

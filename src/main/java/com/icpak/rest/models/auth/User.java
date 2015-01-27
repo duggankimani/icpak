@@ -18,23 +18,35 @@
  */
 package com.icpak.rest.models.auth;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.icpak.rest.models.base.ExpandTokens;
-import com.icpak.rest.models.event.Booking;
-import com.icpak.rest.models.membership.Member;
-import com.wordnik.swagger.annotations.ApiModel;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
+
+import com.icpak.rest.models.base.ExpandTokens;
+import com.icpak.rest.models.base.PO;
+import com.icpak.rest.models.membership.Member;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
  * Simple class that represents any User domain entity in any application.
@@ -50,13 +62,29 @@ import java.util.Set;
 @Entity
 @Table(name="user")
 @Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
-public class User extends UserBase{
+public class User extends PO{
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
          
+	@ApiModelProperty(value="username", required=true)
+    @Basic(optional=false)
+    @Column(length=100, unique=true)
+    @Index(name="idx_users_username")
+    private String username;
+
+	@ApiModelProperty(value="user email", required=true)
+    @Basic(optional=false)
+    @Index(name="idx_users_email")    
+    private String email;
+	
+    @Basic(optional=false)
+    @Column(length=255)
+    private String password;
+    
+    @XmlTransient
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name="user_role",
     joinColumns=@JoinColumn(name="userid"),
@@ -70,6 +98,7 @@ public class User extends UserBase{
     
     @OneToOne
     @JoinColumn(name="memberid")
+    @XmlTransient
     private Member member; //A system user can be a member of ICPAK
     
     public User() {
@@ -130,6 +159,7 @@ public class User extends UserBase{
 
 	public void setUserData(UserData userData) {
 		this.userData = userData;
+		userData.setUser(this);
 	}
 	
 	@PreUpdate
@@ -152,6 +182,30 @@ public class User extends UserBase{
 
 	public void setMember(Member member) {
 		this.member = member;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

@@ -42,6 +42,15 @@ public abstract class BaseResource<T extends ResourceModel> {
 		return Response.noContent().entity("Entity successfuly deleted").build();
 	}
 	
+	public Integer getLimit(Integer limit) {
+		return limit==null? PAGE_LIMIT: limit;
+	}
+
+	public Integer getOffset(Integer offset) {
+		return offset==null? 0: offset;
+	}
+
+	
 	public Response getAll(UriInfo uriInfo, Integer offset,Integer limit){return null;}
 	
 	public Response getById(UriInfo uriInfo,String entityRefId){return null;}

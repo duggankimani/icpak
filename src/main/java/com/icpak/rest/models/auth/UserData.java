@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -27,7 +28,7 @@ import com.icpak.rest.models.membership.Member;
 import com.wordnik.swagger.annotations.ApiModel;
 
 
-@ApiModel(value="User Date Model", 
+@ApiModel(value="User Data Model", 
 description="A UserData model represents data for any person")
 
 @XmlRootElement
@@ -52,7 +53,7 @@ public class UserData extends PO{
     
     @ElementCollection(fetch=FetchType.LAZY)
     @CollectionTable(name="user_salutation", 
-    	joinColumns=@JoinColumn(name="userid",referencedColumnName="id"))
+    	joinColumns=@JoinColumn(name="userid",referencedColumnName="id", nullable=false))
     @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
     @Column(name="salutation")
     private Set<String> salutation = new HashSet<>(); //Mr, Miss, Dr etc
@@ -67,10 +68,12 @@ public class UserData extends PO{
     
     private Date dob;
 
+    @XmlTransient
     @OneToOne
     @JoinColumn(name="userid")
     private User user;
     
+    @XmlTransient
     @OneToOne
     @JoinColumn(name="memberid")
     private Member member;

@@ -12,9 +12,6 @@ import com.icpak.rest.IDUtils;
 import com.icpak.rest.dao.BookingsDao;
 import com.icpak.rest.dao.EventsDao;
 import com.icpak.rest.dao.UsersDao;
-import com.icpak.rest.exceptions.ServiceException;
-import com.icpak.rest.models.ErrorCodes;
-import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.event.Booking;
 

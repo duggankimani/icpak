@@ -8,6 +8,9 @@ import javax.persistence.Query;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.icpak.rest.exceptions.ServiceException;
+import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.PO;
 
 
@@ -66,5 +69,18 @@ public class BaseDao {
 		
 		return getEntityManager().find(clazz, id);
 	}
+	
+	public <T> T findByRef(Class<?> clazz, String refId, boolean throwExceptionIfNull) {
+		T po = getSingleResultOrNull(
+				getEntityManager().createQuery("from "+clazz.getName()+" u where u.refId=:refId")
+				.setParameter("refId", refId));
+		
+		if(po==null && throwExceptionIfNull){
+			throw new ServiceException(ErrorCodes.NOTFOUND,clazz.getName(), "'"+refId+"'");
+		}
+		
+		return po;
+	}
+
 
 }

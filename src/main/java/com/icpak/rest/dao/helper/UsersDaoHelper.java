@@ -16,6 +16,7 @@ import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.auth.Role;
 import com.icpak.rest.models.auth.User;
+import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
@@ -37,17 +38,23 @@ public class UsersDaoHelper {
 		
 		po.setEmail(user.getEmail());
 		po.setUsername(user.getUsername());
-		po.setPassword(user.getPassword());
-//		po.setFirstName(user.getFirstName());
-//		po.setLastName(user.getLastName());
-		
-//		if(user.getMember()!=null){
-//			Member poMember = po.getMember();
-//			if(poMember==null){
-//				poMember = new Member();
-//			}
-//			poMember.setStatus(user.getMember().getStatus());
-//		}
+		//po.setPassword(user.getPassword());
+		if(po.getUserData()==null){
+			po.setUserData(user.getUserData());
+		}else{
+			UserData data = po.getUserData();
+			data.setAgeGroup(user.getUserData().getAgeGroup());
+			data.setCounty(user.getUserData().getCounty());
+			data.setDob(user.getUserData().getDob());
+			data.setFirstName(user.getUserData().getFirstName());
+			data.setLastName(user.getUserData().getLastName());
+			data.setGender(user.getUserData().getGender());
+			data.setNationality(user.getUserData().getNationality());
+			data.setOverseas(user.getUserData().isOverseas());
+			data.setSalutation(user.getUserData().getSalutation());
+			data.setTitle(user.getUserData().getTitle());
+			data.setResidence(user.getUserData().getResidence());
+		}
 		
 		dao.updateUser(po);
 		user.setPassword(po.getPassword());
@@ -59,8 +66,11 @@ public class UsersDaoHelper {
 	}
 	public ResourceCollectionModel<User> getAllUsers(Integer offset, Integer limit,
 			UriInfo uriInfo) {
-		
-		return getAllUsers(offset, limit, uriInfo, null);
+		ResourceCollectionModel<User> collection = getAllUsers(offset, limit, uriInfo, null);
+		for(User user: collection.getItems()){
+			user.setUri(uriInfo.getAbsolutePath()+"/"+user.getRefId());
+		}
+		return collection;
 	}
 	
 	public ResourceCollectionModel<User> getAllUsers(Integer offSet, Integer limit, UriInfo uriInfo, String roleId){

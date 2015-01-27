@@ -95,8 +95,6 @@ public class TestPracticeDao extends AbstractDaoTest{
 		client.setSector(IndustrySector.PUBLIC);
 		list.add(client);
 		
-		
-
 		practice.setClients(list);
 		practice.setFullTime(true);
 		practice.setRefId(practiceId1);
@@ -118,10 +116,10 @@ public class TestPracticeDao extends AbstractDaoTest{
 	}
 	
 	public void getById(){
-		Practice practice = practiceHelper.getPractice(practiceId1);
+		Practice practice = practiceHelper.getPracticeById(practiceId1);
 		Assert.assertNotNull(practice);
 		
-		practice = practiceHelper.getPractice(practiceId2);
+		practice = practiceHelper.getPracticeById(practiceId2);
 		Assert.assertNotNull(practice);
 	}
 	

@@ -42,12 +42,14 @@ public class PermissionsResource extends BaseResource<Permission>{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Get a list of all permissions", response = Permission.class, consumes = MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Get a list of all permissions", response = Permission.class, produces = MediaType.APPLICATION_JSON)
 	public Response getAll(@Context UriInfo uriInfo,
 			@QueryParam("offset") Integer offset,
 			@QueryParam("limit") Integer limit) {
-
-		return buildCollectionResponse(helper.getAllPermissions(uriInfo,offset, limit));
+		
+		ResourceCollectionModel<Permission> collection = helper.getAllPermissions(uriInfo,
+				getOffset(offset), getLimit(limit));
+		return buildCollectionResponse(collection);
 	}
 	
 //	@Path("/{permissionId}/users")
@@ -126,10 +128,11 @@ public class PermissionsResource extends BaseResource<Permission>{
 	 *
 	 */
 	@Api(value="", description="Permission->Roles Resource")
-	class RolePermissionsResource extends BaseResource<Role>{
+	public static class RolePermissionsResource extends BaseResource<Role>{
 
 		@Inject RolesDaoHelper rolesHelper;
-		
+
+		@Inject	PermissionsDaoHelper helper;
 		/**
 		 * permissions/permission123/roles
 		 * 
@@ -168,7 +171,8 @@ public class PermissionsResource extends BaseResource<Permission>{
 		@ApiOperation(value="Utility api to bulk assign a permission to roles", response=Role.class, 
 		consumes=APPLICATION_JSON)
 		public Response create(@Context UriInfo uriInfo,
-				@ApiParam(value = "Permission Id to bulk assign to roles", required = true) @PathParam("permissionId") String permissionId,
+				@ApiParam(value = "Permission Id to bulk assign to roles", required = true) 
+				@PathParam("permissionId") String permissionId,
 				Collection<String> roleIds){
 			
 			Permission permission = helper.setPermission(permissionId,roleIds);
@@ -176,13 +180,12 @@ public class PermissionsResource extends BaseResource<Permission>{
 		}
 		
 		@DELETE
-		@Path("/{permissionId}")
+		@Path("/{roleId}")
 		@Produces(MediaType.APPLICATION_JSON)
 		@ApiOperation(value="Utility api to delete a permission")
 		public Response delete(@ApiParam(value = "Permission Id delete", required = true) @PathParam("permissionId") String permissionId){
 			
 			helper.deletePermission(permissionId);
-			
 			return buildDeleteEntityResponse();
 		}
 	}

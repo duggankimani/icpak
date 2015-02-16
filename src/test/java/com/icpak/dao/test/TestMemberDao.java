@@ -8,6 +8,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -34,7 +35,7 @@ public class TestMemberDao extends AbstractDaoTest{
 	String memberId1;
 	String memberId2;
 	
-	@Test
+	@Ignore
 	public void testCrud(){
 		createMember();
 		retrieveMembers();

@@ -2,6 +2,7 @@ package com.icpak.dao.test;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -17,7 +18,7 @@ public class TestPermissionDao extends AbstractDaoTest{
 	String permissionId1;
 	String permissionId2;
 	
-	@Test
+	@Ignore
 	public void testCrud(){
 		createPermission();
 		retrievePermissions();

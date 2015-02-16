@@ -21,7 +21,7 @@ import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.core.spi.component.ioc.IoCComponentProviderFactory;
 import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 
-public class TestBootstrap{
+public abstract class TestBootstrap{
 
 	static final URI BASE_URI = getBaseURI();
 	HttpServer server;

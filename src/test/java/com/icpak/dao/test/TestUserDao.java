@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -28,7 +29,7 @@ public class TestUserDao extends AbstractDaoTest{
 	String userId1;
 	String userId2;
 	
-	@Test
+	@Ignore
 	public void testCrud(){
 		createUser();
 		retrieveUsers();

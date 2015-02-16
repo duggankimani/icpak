@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -34,7 +35,7 @@ public class TestApplicationDao extends AbstractDaoTest{
 	String applicationId1;
 	String applicationId2;
 	
-	@Test
+	@Ignore
 	public void testCrud(){
 		createApplication();
 		createMember();
@@ -87,11 +88,11 @@ public class TestApplicationDao extends AbstractDaoTest{
 		application.setSubmissionDate(new Date());
 		application.setMember(new Member(memberId));
 		
-		AuditLicenseApplicationDetails details = new AuditLicenseApplicationDetails();
-		details.setAnnualAuditFees(5);
-		details.setIsICPAKReviewDone(1);
+//		AuditLicenseApplicationDetails details = new AuditLicenseApplicationDetails();
+//		details.setAnnualAuditFees(5);
+//		details.setIsICPAKReviewDone(1);
 		
-		application.setAuditDetails(details);
+		//application.setAuditDetails(details);
 		applicationHelper.updateApplication(applicationId2,application);
 	}
 	

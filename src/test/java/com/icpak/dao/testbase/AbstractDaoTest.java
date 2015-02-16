@@ -25,7 +25,7 @@ import com.icpak.rest.dao.helper.UsersDaoHelper;
 
 @RunWith(JukitoRunner.class)
 @UseModules({BaseModule.class})
-public class AbstractDaoTest extends AbstractShiroTest{
+public abstract class AbstractDaoTest extends AbstractShiroTest{
 
 	@Inject UsersDaoHelper helper;
 	@Inject UsersDao dao;

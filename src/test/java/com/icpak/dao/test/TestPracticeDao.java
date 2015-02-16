@@ -7,6 +7,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.inject.Inject;
@@ -32,7 +33,7 @@ public class TestPracticeDao extends AbstractDaoTest{
 	String practiceId1;
 	String practiceId2;
 	
-	@Test
+	@Ignore
 	public void testCrud(){
 		createPractice();
 		updatePractice();

@@ -35,3 +35,14 @@ Creating a Local Maven Archetype
 - Go to <code>target/generated-sources/archetype</code> and run <code>mvn install </code>
 - Create a fresh project from Archetype <code> mvn archetype:generate -DarchetypeCatalog=local </code> using <code>com.pampanet:jersey-guice-bootstrap-archetype </code>
 - From Eclipse you have check the "include snapshot archetypes" checkbox, and select the archetype from the catalog after installing it.
+
+
+DEPLOY TO TOMCAT
+----------------
+Tomcat maven plugin Configuration: http://www.mkyong.com/maven/how-to-deploy-maven-based-war-file-to-tomcat/
+
+mvn tomcat6:deploy 
+mvn tomcat6:undeploy 
+mvn tomcat6:redeploy
+
+

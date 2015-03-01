@@ -137,6 +137,8 @@ public class User extends PO{
 			}
 			user.setRoles(cloneRoles);
 		}
+		
+		if(userData!=null)
 		user.setUserData(userData.clone());
 		user.setCreated(getCreated());
 		user.setUpdated(getUpdated());

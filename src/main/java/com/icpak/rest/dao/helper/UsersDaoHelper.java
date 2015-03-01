@@ -29,6 +29,9 @@ public class UsersDaoHelper {
 	
 	public void add(User user){
 		user.setRefId(IDUtils.generateId());
+		if(user.getUserData()!=null){
+			user.getUserData().setUser(user);
+		}
 		dao.createUser(user);
 		assert user.getId()!=null;
 	}
@@ -120,11 +123,12 @@ public class UsersDaoHelper {
 
 	public User getUser(String userId) {
 		User user = dao.findByUserId(userId);
+		
 		if(user==null){
 			throw new ServiceException(ErrorCodes.NOTFOUND,"'"+userId+"'");
 		}
 		
-		return user;
+		return user.clone();
 	}
 
 }

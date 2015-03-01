@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
@@ -33,7 +32,6 @@ description="A UserData model represents data for any person")
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Member.class})
 
 @Entity
 @Table(name="userdata")
@@ -232,6 +230,12 @@ public class UserData extends PO{
 		this.county = county;
 	}
 
+	public UserData clone(String ... opts){
+		UserData data = new UserData();
+		data.copy(this);
+		
+		return data;
+	}
 
 	public void copy(UserData userData) {
 		setAgeGroup(userData.ageGroup);

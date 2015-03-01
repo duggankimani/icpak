@@ -18,7 +18,9 @@
  */
 package com.icpak.rest.models.auth;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -57,7 +59,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Member.class})
+@XmlSeeAlso({Member.class,UserData.class})
 
 @Entity
 @Table(name="user")
@@ -121,9 +123,23 @@ public class User extends PO{
 	}
 	
 	public User clone(String...expand){
+		
 		User user = new User();
 		user.setRefId(refId);
 		user.setUsername(getUsername());
+		user.setEmail(email);
+		
+		if(roles!=null){
+			Set<Role> cloneRoles  = new HashSet<>();
+			for(Role role:roles){
+				Role clone  = role.clone();
+				cloneRoles.add(clone);
+			}
+			user.setRoles(cloneRoles);
+		}
+		user.setUserData(userData.clone());
+		user.setCreated(getCreated());
+		user.setUpdated(getUpdated());
 		
 		if(expand!=null){
 			for(String token: expand){
@@ -159,6 +175,8 @@ public class User extends PO{
 
 	public void setUserData(UserData userData) {
 		this.userData = userData;
+		
+		if(userData!=null)
 		userData.setUser(this);
 	}
 	

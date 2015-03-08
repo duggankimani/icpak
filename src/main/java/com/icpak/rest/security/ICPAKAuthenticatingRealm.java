@@ -30,7 +30,7 @@ public class ICPAKAuthenticatingRealm extends AuthenticatingRealm {
 		return userDao.get();
 	}
 
-	protected AuthenticationInfo doGetAuthenticationInfo(
+	public AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		User user = getUserDao().findUser(token.getUsername());
@@ -42,10 +42,10 @@ public class ICPAKAuthenticatingRealm extends AuthenticatingRealm {
 
 	}
 
-	protected AuthorizationInfo doGetAuthorizationInfo(
+	public AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
 		Long userId = (Long) principals.fromRealm(getName()).iterator().next();
-		User user = getUserDao().getById(User.class,userId);
+		User user = getUserDao().getById(User.class, userId);
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			for (Role role : user.getRoles()) {

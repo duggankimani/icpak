@@ -70,6 +70,22 @@ public class UsersResource extends BaseResource<User> {
 		return buildGetEntityResponse(uriInfo.getAbsolutePath().toString(),
 				user);
 	}
+	
+	@GET
+	@Path("/auth")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Authenticate a user", 
+	response = User.class, consumes = MediaType.APPLICATION_JSON)
+	public Response login(
+			@Context UriInfo uriInfo,
+			@ApiParam(value = "Username of the user to authenticate", required = true) @QueryParam("username") String username,
+			@ApiParam(value = "Password of the user", required = true) @QueryParam("password") String password){
+		User loggedIn = helper.authenticate(username, password);
+		
+		String uri = uriInfo.getAbsolutePath().toString().replace("auth", loggedIn.getRefId());
+		return buildGetEntityResponse(uri,
+				loggedIn);
+	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

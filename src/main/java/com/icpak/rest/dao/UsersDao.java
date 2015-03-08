@@ -8,7 +8,6 @@ import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.auth.Role;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.membership.Contact;
 
 public class UsersDao extends BaseDao{
 

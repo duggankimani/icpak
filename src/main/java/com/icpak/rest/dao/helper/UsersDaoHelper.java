@@ -6,6 +6,12 @@ import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
+
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.icpak.rest.BaseResource;
@@ -20,12 +26,14 @@ import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
+import com.icpak.rest.security.ICPAKAuthenticatingRealm;
 
 @Transactional
 public class UsersDaoHelper {
 
 	@Inject UsersDao dao;
 	@Inject RolesDao roleDao;
+	@Inject ICPAKAuthenticatingRealm realm;
 	
 	public void add(User user){
 		user.setRefId(IDUtils.generateId());
@@ -129,6 +137,30 @@ public class UsersDaoHelper {
 		}
 		
 		return user.clone();
+	}
+
+	@SuppressWarnings("deprecation")
+	public User authenticate(String username, String password) {
+		Sha256CredentialsMatcher matcher = new Sha256CredentialsMatcher();
+		User user = dao.findUser(username);
+		if(user==null){
+			throw new ServiceException(ErrorCodes.UNAUTHORIZEDACCESS);
+		}
+		
+		AuthenticationToken token = new UsernamePasswordToken(username, password);
+		UsernamePasswordToken authcToken = new UsernamePasswordToken(username, password);
+		boolean isMatch=false;
+		try{
+			isMatch = matcher.doCredentialsMatch(token, realm.getAuthenticationInfo(authcToken));
+		}catch(IncorrectCredentialsException e){
+			throw new ServiceException(ErrorCodes.UNAUTHORIZEDACCESS);
+		}
+		
+		if(!isMatch){
+			throw new ServiceException(ErrorCodes.UNAUTHORIZEDACCESS);
+		}
+		
+		return user;
 	}
 
 }

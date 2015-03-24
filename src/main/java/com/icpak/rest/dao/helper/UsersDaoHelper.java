@@ -143,7 +143,7 @@ public class UsersDaoHelper {
 	public User authenticate(String username, String password) {
 		Sha256CredentialsMatcher matcher = new Sha256CredentialsMatcher();
 		User user = dao.findUser(username);
-		if(user==null){
+		if(password==null || user==null){
 			throw new ServiceException(ErrorCodes.UNAUTHORIZEDACCESS);
 		}
 		

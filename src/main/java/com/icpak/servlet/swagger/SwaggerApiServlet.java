@@ -1,5 +1,7 @@
 package com.icpak.servlet.swagger;
 
+import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 
 import com.google.inject.Singleton;
@@ -24,8 +26,15 @@ public class SwaggerApiServlet extends JerseyJaxrsConfig {
 		super.init(servletConfig);
 		SwaggerConfig swaggerConfig = new SwaggerConfig();
 		ConfigFactory.setConfig(swaggerConfig);
-		swaggerConfig.setBasePath("http://localhost:8080/icpak/api");
-		swaggerConfig.setApiVersion("1.0.0");
+		try{
+			Properties props = new Properties();
+			props.load(SwaggerApiServlet.class.getClassLoader().getResourceAsStream("bootstrap.properties"));
+			swaggerConfig.setBasePath(props.getProperty("swagger_base_path"));
+			swaggerConfig.setApiVersion(props.getProperty("rest_api_version"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		ScannerFactory.setScanner(new DefaultJaxrsScanner());
 		ClassReaders.setReader(new DefaultJaxrsApiReader());
 	}

@@ -82,6 +82,7 @@ public class User extends PO{
 	
     @Basic(optional=false)
     @Column(length=255)
+    @XmlTransient
     private String password;
     
     @XmlTransient

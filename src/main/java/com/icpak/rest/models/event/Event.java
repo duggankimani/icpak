@@ -33,7 +33,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 @Table(name="event")
 public class Event extends PO{
 
-	/**
+	/**	
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -43,11 +43,15 @@ public class Event extends PO{
 	@Column(length=5000)
 	private String description;
 	@Column(length=255)
+	private Integer cpdHours;
 	private String venue;
+	
 	private Date startDate;
 	private Date endDate;
 	private EventStatus status;
 	private EventType type;
+	private Double memberPrice;
+	private Double nonMemberPrice;
 	
 	@XmlTransient
 	@OneToMany(mappedBy="event")
@@ -146,6 +150,30 @@ public class Event extends PO{
 
 	public void setType(EventType type) {
 		this.type = type;
+	}
+
+	public Integer getCpdHours() {
+		return cpdHours;
+	}
+
+	public void setCpdHours(Integer cpdHours) {
+		this.cpdHours = cpdHours;
+	}
+
+	public Double getMemberPrice() {
+		return memberPrice;
+	}
+
+	public void setMemberPrice(Double memberPrice) {
+		this.memberPrice = memberPrice;
+	}
+
+	public Double getNonMemberPrice() {
+		return nonMemberPrice;
+	}
+
+	public void setNonMemberPrice(Double nonMemberPrice) {
+		this.nonMemberPrice = nonMemberPrice;
 	}
 
 }

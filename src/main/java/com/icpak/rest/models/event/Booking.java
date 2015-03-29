@@ -4,11 +4,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +32,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Event.class, User.class})
+@XmlSeeAlso({Delegate.class, Contact.class})
 
 @Entity
 @Table(name="booking")
@@ -41,17 +44,24 @@ public class Booking extends PO{
 	private static final long serialVersionUID = 1L;
 	
 	private String companyName;
+	
+	@OneToOne(mappedBy="booking", 
+			cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	private Contact contact;
+	
 	private String paymentMode;
 	private String currency;
 	private Date bookingDate;
+	
+	@Transient
+	private String eventId;
 	
 	private String paymentRef;
 	private Date paymentDate;
 	private String status; //DRAFT/ PAID
 	private int delegatesCount;
 	
-	@OneToMany(mappedBy="booking",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="booking",fetch=FetchType.LAZY,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	private Collection<Delegate> delegates = new HashSet<>();
 	
 	@ManyToOne
@@ -105,8 +115,20 @@ public class Booking extends PO{
 		booking.setStatus(status);
 		booking.setPaymentRef(paymentRef);
 		booking.setPaymentDate(paymentDate);
+		booking.setPaymentMode(paymentMode);
+		
+		booking.setContact(contact);
+		booking.setCompanyName(companyName);
+		booking.setCurrency(currency);
+		if(delegates!=null)
+		for(Delegate delegate: delegates){
+			booking.addDelegate(delegate);
+		}
+		
+		booking.setDelegatesCount(delegatesCount);
+		booking.setEvent(event);
 		//booking.setUser(user.clone());
-		booking.setEvent(event.clone());
+		booking.setEventId(eventId);
 		
 		if(expand!=null)
 		for(String token: expand){
@@ -127,6 +149,10 @@ public class Booking extends PO{
 		}
 		
 		return booking;
+	}
+
+	private void addDelegate(Delegate delegate) {
+		delegates.add(delegate);
 	}
 
 	public String getCompanyName() {
@@ -174,7 +200,19 @@ public class Booking extends PO{
 	}
 
 	public void setDelegates(Collection<Delegate> delegates) {
-		this.delegates = delegates;
+		delegates.clear();
+		for(Delegate delegate: delegates){
+			delegates.add(delegate);
+			delegate.setBooking(this);
+		}
+	}
+
+	public String getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
 	}
 	
 }

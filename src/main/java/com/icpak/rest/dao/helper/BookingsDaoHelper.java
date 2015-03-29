@@ -1,6 +1,7 @@
 package com.icpak.rest.dao.helper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import com.icpak.rest.dao.EventsDao;
 import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.event.Booking;
+import com.icpak.rest.models.event.Delegate;
+import com.icpak.rest.models.membership.Contact;
 
 @Transactional
 public class BookingsDaoHelper {
@@ -54,22 +57,27 @@ public class BookingsDaoHelper {
 		
 		booking.setRefId(IDUtils.generateId());
 		booking.setBookingDate(new Date());
-//		booking.setPaymentDate(booking.getPaymentDate());
-//		booking.setPaymentRef(booking.getPaymentRef());
 		booking.setStatus(booking.getStatus());
 		
-//		if(booking.getUser()==null || booking.getUser().getRefId()==null ){
-//			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "User", "UserId=null");
-//		}
-		
-//		String userId = booking.getUser().getRefId();
-//		User user = userDao.findByUserId(userId, true);
-//		booking.setUser(user);
-		
+		Contact c = booking.getContact();
+		booking.setContact(null);
 		booking.setEvent(eventDao.getByEventId(eventId));
+		
+		if(booking.getDelegates()!=null)
+		for(Delegate delegate: booking.getDelegates()){
+			delegate.setBooking(booking);
+		}
+		
 		dao.save(booking);
 		
+		if(c!=null){			
+			c.setBooking(booking);
+			dao.save(c);
+			booking.setContact(c);
+		}
+		
 		assert booking.getId()!=null;
+		
 		
 		return booking.clone();
 	}
@@ -79,8 +87,29 @@ public class BookingsDaoHelper {
 		
 		Booking poBooking = getBookingById(eventId,bookingId);
 		poBooking.setBookingDate(booking.getBookingDate());
-//		poBooking.setPaymentDate(booking.getPaymentDate());
-//		poBooking.setPaymentRef(booking.getPaymentRef());
+		poBooking.setCompanyName(booking.getCompanyName());
+		poBooking.setPaymentMode(booking.getPaymentMode());
+		poBooking.setPaymentDate(booking.getPaymentDate());
+		
+		if(booking.getContact()!=null){
+			Contact poContact = poBooking.getContact();
+			if(poContact==null){
+				poContact = new Contact();
+			}
+			
+			Contact contact = booking.getContact();
+			poContact.setCity(contact.getCity());
+			poContact.setCountry(contact.getCountry());
+			poContact.setContactName(contact.getContactName());
+			poContact.setPhysicalAddress(contact.getPhysicalAddress());
+			poContact.setPostalCode(contact.getPostalCode());
+			poContact.setEmail(contact.getEmail());
+			poContact.setFax(contact.getFax());
+		}
+		
+		Collection<Delegate> delegates = booking.getDelegates();
+		poBooking.setDelegates(delegates);
+		
 		poBooking.setStatus(booking.getStatus());
 		
 //		if(booking.getUser()==null || booking.getUser().getRefId()==null ){

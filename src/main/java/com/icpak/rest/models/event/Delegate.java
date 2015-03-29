@@ -4,10 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.icpak.rest.models.base.PO;
 import com.wordnik.swagger.annotations.ApiModel;
@@ -33,9 +35,12 @@ public class Delegate extends PO{
 	private String surname;
 	private String otherNames;
 	private String email;
+	@Transient
+	private String bookingId;
 	
 	@ManyToOne
 	@JoinColumn(name="booking_id")
+	@XmlTransient
 	private Booking booking;
 
 	public boolean isRegisteredMember() {
@@ -92,5 +97,15 @@ public class Delegate extends PO{
 
 	public void setBooking(Booking booking) {
 		this.booking = booking;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 }

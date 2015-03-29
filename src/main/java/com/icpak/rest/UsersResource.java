@@ -28,7 +28,8 @@ import com.wordnik.swagger.annotations.ApiParam;
  * <p>
  * <b>1 Big Gotcha</b> <br>
  * Resource Classes are managed by Jersey and not Guice. This is a problem if
- * you need to use @Transactional in such classes. i.e. Putting @Transactional
+ * you need to annotate methods with @Transactional amongst other functionality.
+ *  i.e. Putting @Transactional
  * in this class (MemberResource) has no effect. Guice will not begin a
  * transaction for your request. <br>
  * A workaround is to delegate execution to a guice managed class, then inject

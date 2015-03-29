@@ -1,24 +1,22 @@
 package com.icpak.rest.models.membership;
 
-import java.util.List;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.icpak.rest.models.base.PO;
+import com.icpak.rest.models.event.Booking;
 import com.wordnik.swagger.annotations.ApiModel;
 
 
@@ -45,15 +43,9 @@ public class Contact extends PO{
 	private boolean isPrimaryContact;
 	private String email;
 
-    @ElementCollection(fetch=FetchType.LAZY)
-    @CollectionTable(name="contact_tel")
-    @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private List<String> telephoneNumbers;
+	private String telephoneNumbers;
 	
-    @ElementCollection(fetch=FetchType.LAZY)
-    @CollectionTable(name="contact_mobile")
-    @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	private List<String> mobileNumbers;
+	private String mobileNumbers;
 	
 	@Column(length=500)
 	private String physicalAddress;
@@ -77,6 +69,15 @@ public class Contact extends PO{
 	private String website;
 	
 	private String fax;
+	
+	private String city;
+	
+	private String country;
+	
+	@OneToOne
+	@XmlTransient
+	private Booking booking;
+	
 
 	public ContactType getType() {
 		return type;
@@ -100,22 +101,6 @@ public class Contact extends PO{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public List<String> getTelephoneNumbers() {
-		return telephoneNumbers;
-	}
-
-	public void setTelephoneNumbers(List<String> telephoneNumbers) {
-		this.telephoneNumbers = telephoneNumbers;
-	}
-
-	public List<String> getMobileNumbers() {
-		return mobileNumbers;
-	}
-
-	public void setMobileNumbers(List<String> mobileNumbers) {
-		this.mobileNumbers = mobileNumbers;
 	}
 
 	public String getPhysicalAddress() {
@@ -180,5 +165,45 @@ public class Contact extends PO{
 
 	public void setFax(String fax) {
 		this.fax = fax;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getTelephoneNumbers() {
+		return telephoneNumbers;
+	}
+
+	public void setTelephoneNumbers(String telephoneNumbers) {
+		this.telephoneNumbers = telephoneNumbers;
+	}
+
+	public String getMobileNumbers() {
+		return mobileNumbers;
+	}
+
+	public void setMobileNumbers(String mobileNumbers) {
+		this.mobileNumbers = mobileNumbers;
+	}
+
+	public Booking getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Booking booking) {
+		this.booking = booking;
 	}
 }

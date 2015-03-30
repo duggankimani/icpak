@@ -19,7 +19,8 @@ public class UsersDao extends BaseDao{
     }
 
     public void createUser(User user) {
-    	user.setPassword(new Sha256Hash(user.getPassword()).toHex());
+    	if(user.getPassword()!=null)
+    		user.setPassword(new Sha256Hash(user.getPassword()).toHex());
         save( user );
     }
 

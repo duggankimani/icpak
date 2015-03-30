@@ -25,6 +25,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -82,7 +83,6 @@ public class User extends PO{
 	
     @Basic(optional=false)
     @Column(length=255)
-    @XmlTransient
     private String password;
     
     @XmlTransient
@@ -97,10 +97,11 @@ public class User extends PO{
     		cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.MERGE})
     private UserData userData=null;
     
-    @OneToOne
-    @JoinColumn(name="memberid")
     @XmlTransient
+    @OneToOne(fetch=FetchType.LAZY)
     private Member member; //A system user can be a member of ICPAK
+    
+    private String memberId;
     
     public User() {
 	}
@@ -141,6 +142,10 @@ public class User extends PO{
 		user.setUserData(userData.clone());
 		user.setCreated(getCreated());
 		user.setUpdated(getUpdated());
+		
+		if(user.getMember()!=null){
+			user.setMemberId(user.getMember().getRefId());
+		}
 		
 		if(expand!=null){
 			for(String token: expand){
@@ -225,6 +230,14 @@ public class User extends PO{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 }

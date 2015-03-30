@@ -8,7 +8,6 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
 
@@ -26,6 +25,7 @@ import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
+import com.icpak.rest.models.membership.Member;
 import com.icpak.rest.security.ICPAKAuthenticatingRealm;
 
 @Transactional
@@ -35,12 +35,14 @@ public class UsersDaoHelper {
 	@Inject RolesDao roleDao;
 	@Inject ICPAKAuthenticatingRealm realm;
 	
-	public void add(User user){
+	public void create(User user){
 		user.setRefId(IDUtils.generateId());
 		if(user.getUserData()!=null){
 			user.getUserData().setUser(user);
 		}
+		
 		dao.createUser(user);
+		createDefaultMemberForUser(user);
 		assert user.getId()!=null;
 	}
 	
@@ -49,7 +51,6 @@ public class UsersDaoHelper {
 		
 		po.setEmail(user.getEmail());
 		po.setUsername(user.getUsername());
-		//po.setPassword(user.getPassword());
 		if(po.getUserData()==null){
 			po.setUserData(user.getUserData());
 		}else{
@@ -68,9 +69,20 @@ public class UsersDaoHelper {
 		}
 		
 		dao.updateUser(po);
-		user.setPassword(po.getPassword());
+
+		if(po.getMember()==null){
+			createDefaultMemberForUser(po);
+		}
 	}
 	
+	private void createDefaultMemberForUser(User user) {
+		//create and empty member a/c
+		Member member = new Member(user.getRefId());
+		user.setMember(member);
+		dao.save(member);
+		
+	}
+
 	public void delete(String userId){
 		User user = dao.findByUserId(userId);
 		dao.delete(user);

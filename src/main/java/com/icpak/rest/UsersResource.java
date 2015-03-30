@@ -94,7 +94,7 @@ public class UsersResource extends BaseResource<User> {
 	@ApiOperation(value = "Create a new user", response = User.class, consumes = MediaType.APPLICATION_JSON)
 	public Response create(@Context UriInfo uriInfo, User user) {
 
-		helper.add(user);
+		helper.create(user);
 		String uri = uriInfo.getAbsolutePath().toString() + "/"
 				+ user.getRefId();
 		return buildCreateEntityResponse(uri, user);

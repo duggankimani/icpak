@@ -10,7 +10,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
-import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.PO;
 
 

@@ -2,7 +2,7 @@ package com.icpak.rest.models.membership;
 
 public enum MembershipStatus {
 
-	APPLICANT,
+	DRAFTED,
 	ACTIVE,
 	RETIRED,
 	DEREGISTERED

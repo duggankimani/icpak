@@ -6,20 +6,23 @@ import java.util.HashSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.PO;
+import com.icpak.rest.models.cpd.CPD;
 import com.wordnik.swagger.annotations.ApiModel;
 
 
@@ -46,35 +49,49 @@ public class Member extends PO{
 	private String pin;
 	private MemberType memberType; // Member, AssociateMember, Practicing Member
 	
-	@OneToOne(mappedBy="member",cascade=CascadeType.ALL)
-	private UserData userData;
+	@Transient
+	private String userId;
 	
+	@XmlTransient
 	@OneToOne(mappedBy="member",cascade=CascadeType.ALL)
+	@JoinColumn(name="userId")
 	private User user;//A member is a system user
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Education> education = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Specialization> specializations = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<TrainingAndExperience> trainingAndExperience = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<CriminalOffense> offenses = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Partner> partners = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Partner> partnerships = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Application> applications = new HashSet<>();
 	
+	@XmlTransient
 	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Practice> firms = new HashSet<>();
+	
+	@XmlTransient
+	@OneToMany(mappedBy="member", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	private Collection<CPD> cpd = new HashSet<>();
 	
 	public Member() {
 	}
@@ -113,23 +130,6 @@ public class Member extends PO{
 
 	public void setMemberType(MemberType memberType) {
 		this.memberType = memberType;
-	}
-
-	public UserData getUserData() {
-		return userData;
-	}
-
-	public void setUserData(UserData userData) {
-		if(this.userData!=null && userData!=null){
-			this.userData.copy(userData);
-		}else{
-			this.userData = userData;
-		}
-		
-//		this.userData.setMember(this);
-//		if(user!=null){
-//			user.setUserData(userData);
-//		}
 	}
 
 	public User getUser() {
@@ -218,6 +218,25 @@ public class Member extends PO{
 	}
 
 	public Member clone(String ... expand) {
-		return this;
+		Member member = this;
+		member.setUserId(userId);
+		return member;
 	}
+
+	public Collection<CPD> getCpd() {
+		return cpd;
+	}
+
+	public void setCpd(Collection<CPD> cpd) {
+		this.cpd = cpd;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 }

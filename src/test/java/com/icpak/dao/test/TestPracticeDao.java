@@ -8,7 +8,6 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;
@@ -77,7 +76,7 @@ public class TestPracticeDao extends AbstractDaoTest{
 		Member member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23W44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		memberHelper.createMember(member);
 		memberId = member.getRefId();

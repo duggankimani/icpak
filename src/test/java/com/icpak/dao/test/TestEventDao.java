@@ -3,7 +3,6 @@ package com.icpak.dao.test;
 import junit.framework.Assert;
 
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;

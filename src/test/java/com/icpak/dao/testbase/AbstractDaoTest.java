@@ -5,16 +5,13 @@ import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.shiro.subject.Subject;
-import org.hibernate.Session;
 import org.jukito.JukitoRunner;
 import org.jukito.UseModules;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

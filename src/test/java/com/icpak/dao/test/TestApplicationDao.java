@@ -1,26 +1,20 @@
 package com.icpak.dao.test;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 
 import junit.framework.Assert;
 
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;
 import com.icpak.rest.dao.helper.ApplicationsDaoHelper;
 import com.icpak.rest.dao.helper.MemberDaoHelper;
-import com.icpak.rest.models.auth.Gender;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.Application;
 import com.icpak.rest.models.membership.ApplicationStatus;
 import com.icpak.rest.models.membership.ApplicationType;
-import com.icpak.rest.models.membership.AuditLicenseApplicationDetails;
 import com.icpak.rest.models.membership.IndustrySector;
 import com.icpak.rest.models.membership.Member;
 import com.icpak.rest.models.membership.MemberType;
@@ -100,7 +94,7 @@ public class TestApplicationDao extends AbstractDaoTest{
 		Member member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23W44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		//user
 		User user = new User();
@@ -109,12 +103,12 @@ public class TestApplicationDao extends AbstractDaoTest{
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
-		UserData data = new UserData();
-		data.setFirstName("Mimi");
-		data.setLastName("Testing");
-		data.setGender(Gender.FEMALE);
-		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
-		member.setUserData(data);
+//		UserData data = new UserData();
+//		data.setFirstName("Mimi");
+//		data.setLastName("Testing");
+//		data.setGender(Gender.FEMALE);
+//		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
+//		member.setUserData(data);
 		memberHelper.createMember(member);
 		memberId = member.getRefId();
 		return member;

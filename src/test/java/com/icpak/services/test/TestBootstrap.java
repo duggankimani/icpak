@@ -5,15 +5,12 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.shiro.SecurityUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.icpak.servlet.config.GenericBootstrapConstants;
 import com.icpak.servlet.modules.BootstrapServletModule;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;

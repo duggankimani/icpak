@@ -5,8 +5,8 @@ import java.net.URI;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.icpak.rest.models.base.ResourceModel;
 import com.icpak.rest.models.base.ResourceCollectionModel;
+import com.icpak.rest.models.base.ResourceModel;
 
 /**
  * Generic Class for preparation of responses back to caller:

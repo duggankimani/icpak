@@ -1,22 +1,17 @@
 package com.icpak.dao.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;
 import com.icpak.rest.dao.helper.MemberDaoHelper;
-import com.icpak.rest.models.auth.Gender;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.CriminalOffense;
 import com.icpak.rest.models.membership.EduType;
@@ -156,7 +151,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		Member member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23W44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		//user
 		User user = new User();
@@ -165,12 +160,12 @@ public class TestMemberDao extends AbstractDaoTest{
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
-		UserData data = new UserData();
-		data.setFirstName("Mimi");
-		data.setLastName("Testing");
-		data.setGender(Gender.FEMALE);
-		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
-		member.setUserData(data);
+//		UserData data = new UserData();
+//		data.setFirstName("Mimi");
+//		data.setLastName("Testing");
+//		data.setGender(Gender.FEMALE);
+//		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
+//		member.setUserData(data);
 		helper.createMember(member);
 		memberId1 = member.getRefId();
 		
@@ -178,7 +173,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23W44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		//user
 		user = new User();
@@ -187,12 +182,12 @@ public class TestMemberDao extends AbstractDaoTest{
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
-		data = new UserData();
-		data.setFirstName("Mimi");
-		data.setLastName("Testing");
-		data.setGender(Gender.FEMALE);
-		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
-		member.setUserData(data);
+//		data = new UserData();
+//		data.setFirstName("Mimi");
+//		data.setLastName("Testing");
+//		data.setGender(Gender.FEMALE);
+//		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
+//		member.setUserData(data);
 		helper.createMember(member);
 		memberId2  = member.getRefId();
 	}
@@ -201,7 +196,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		Member member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23IIW44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		//user
 		User user = new User();
@@ -210,19 +205,19 @@ public class TestMemberDao extends AbstractDaoTest{
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
-		UserData data = new UserData();
-		data.setFirstName("Mimi1");
-		data.setLastName("Testing1");
-		data.setGender(Gender.MALE);
-		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
-		member.setUserData(data);
+//		UserData data = new UserData();
+//		data.setFirstName("Mimi1");
+//		data.setLastName("Testing1");
+//		data.setGender(Gender.MALE);
+//		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
+//		member.setUserData(data);
 		helper.updateMember(memberId1, member);
 		
 		//MEMBER 2
 		member = new Member();
 		member.setMemberType(MemberType.MEMBER);
 		member.setPin("AA23W44");
-		member.setStatus(MembershipStatus.APPLICANT);
+		member.setStatus(MembershipStatus.DRAFTED);
 		member.setHasConvictions(false);
 		//user
 		user = new User();
@@ -231,12 +226,12 @@ public class TestMemberDao extends AbstractDaoTest{
 		user.setPassword("passwd1");
 		member.setUser(user);
 		//userdata
-		data = new UserData();
-		data.setFirstName("Mimi2");
-		data.setLastName("Testing2");
-		data.setGender(Gender.MALE);
-		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
-		member.setUserData(data);
+//		data = new UserData();
+//		data.setFirstName("Mimi2");
+//		data.setLastName("Testing2");
+//		data.setGender(Gender.MALE);
+//		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
+//		member.setUserData(data);
 		helper.updateMember(memberId2, member);
 		
 	}

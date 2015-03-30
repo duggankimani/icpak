@@ -6,7 +6,6 @@ import java.util.HashSet;
 import junit.framework.Assert;
 
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.inject.Inject;
 import com.icpak.dao.testbase.AbstractDaoTest;
@@ -50,7 +49,7 @@ public class TestUserDao extends AbstractDaoTest{
 		data.setGender(Gender.FEMALE);
 		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
 		user.setUserData(data);
-		userHelper.add(user);
+		userHelper.create(user);
 		
 		userId1 = user.getRefId();
 		
@@ -64,7 +63,7 @@ public class TestUserDao extends AbstractDaoTest{
 		data.setGender(Gender.FEMALE);
 		data.setSalutation(new HashSet<String>(Arrays.asList("DR","Mrs","Hon")));
 		user.setUserData(data);
-		userHelper.add(user);
+		userHelper.create(user);
 		userId2 = user.getRefId();
 		
 	}

@@ -17,8 +17,9 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.google.inject.Inject;
-import com.icpak.rest.dao.helper.UsersDaoHelper;
-import com.icpak.rest.models.auth.User;
+import com.icpak.rest.dao.helper.MemberDaoHelper;
+import com.icpak.rest.models.membership.Member;
+import com.sun.jersey.api.core.InjectParam;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -26,73 +27,84 @@ import com.wordnik.swagger.annotations.ApiParam;
 @RequiresAuthentication
 @Path("members")
 @Api(value = "members", description = "Handles CRUD on member data")
-public class MembersResource extends BaseResource<User> {
+public class MembersResource extends BaseResource<Member> {
 
 	@Inject
-	UsersDaoHelper helper;
+	MemberDaoHelper helper;
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Get a list of all users", response = User.class, consumes = MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Get a list of all members", response = Member.class, consumes = MediaType.APPLICATION_JSON)
 	public Response getAll(@Context UriInfo uriInfo,
 			@QueryParam("offset") Integer offset,
 			@QueryParam("limit") Integer limit) {
 
-		return buildCollectionResponse(helper.getAllUsers(offset, limit,
+		return buildCollectionResponse(helper.getAllMembers(offset, limit,
 				uriInfo));
 	}
 
 	@GET
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Get a user by userId", response = User.class, consumes = MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Get a member by memberId", response = Member.class, consumes = MediaType.APPLICATION_JSON)
 	public Response getById(
 			@Context UriInfo uriInfo,
-			@ApiParam(value = "User Id of the user to fetch", required = true) @PathParam("userId") String userId) {
+			@ApiParam(value = "Member Id of the member to fetch", required = true) @PathParam("memberId") String memberId) {
 
-		User user = helper.getUser(userId);
+		Member member = helper.getMemberById(memberId);
 		return buildGetEntityResponse(uriInfo.getAbsolutePath().toString(),
-				user);
+				member);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Create a new user", response = User.class, consumes = MediaType.APPLICATION_JSON)
-	public Response create(@Context UriInfo uriInfo, User user) {
+	@ApiOperation(value = "Create a new member", response = Member.class, consumes = MediaType.APPLICATION_JSON)
+	public Response create(@Context UriInfo uriInfo, Member member) {
 
-		helper.add(user);
+		helper.createMember(member);
 		String uri = uriInfo.getAbsolutePath().toString() + "/"
-				+ user.getRefId();
-		return buildCreateEntityResponse(uri, user);
+				+ member.getRefId();
+		return buildCreateEntityResponse(uri, member);
 	}
 
 	@PUT
 	@Path("/{memberId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Update an existing user", response = User.class, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Update an existing member", response = Member.class, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public Response update(
 			@Context UriInfo uriInfo,
-			@ApiParam(value = "User Id of the user to fetch", required = true) @PathParam("userId") String userId,
-			User user) {
+			@ApiParam(value = "Member Id of the member to fetch", required = true) @PathParam("memberId") String memberId,
+			Member member) {
 
-		helper.update(userId, user);
+		helper.updateMember(memberId, member);
 		String uri = uriInfo.getAbsolutePath().toString();
-		return buildUpdateEntityResponse(uri, user);
+		return buildUpdateEntityResponse(uri, member);
 	}
 
 	@DELETE
 	@Path("/{memberId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Delete an existing user")
+	@ApiOperation(value = "Delete an existing member")
 	public Response delete(
-			@ApiParam(value = "User Id of the user to fetch", required = true) @PathParam("userId") String userId) {
+			@ApiParam(value = "Member Id of the member to fetch", required = true) @PathParam("memberId") String memberId) {
 
-		helper.delete(userId);
+		helper.deleteMember(memberId);
 
 		return buildDeleteEntityResponse();
+	}
+	
+	/**
+	 * Member CPD
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	@Path("/{memberId}/cpd")
+	public CPDResource bookings(@InjectParam CPDResource resource){
+		return resource;
 	}
 
 }

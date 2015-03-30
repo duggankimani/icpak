@@ -10,24 +10,33 @@ import com.google.inject.persist.Transactional;
 import com.icpak.rest.IDUtils;
 import com.icpak.rest.dao.MemberDao;
 import com.icpak.rest.dao.RolesDao;
+import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.Member;
+import com.icpak.rest.models.membership.MemberType;
 
 @Transactional
 public class MemberDaoHelper {
 	
 	@Inject MemberDao memberDao;
+	@Inject UsersDao userDao;
 	@Inject RolesDao roleDao;
 	
 	public void createMember(Member member){
 		if(member.getRefId()!=null){
 			updateMember(member.getRefId(), member);
 			return;
+		}
+		
+		if(member.getUserId()==null){
+			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "userId","Null");
+		}else{
+			member.setUser(userDao.findByUserId(member.getUserId()));
+			member.setRefId(member.getUserId());
 		}
 		
 		memberDao.createMember(member);
@@ -38,18 +47,8 @@ public class MemberDaoHelper {
 		Member po = memberDao.findByMemberId(memberId,true);
 		po.setStatus(member.getStatus());
 		po.setHasConvictions(member.getHasConvictions());
-		
-		User user = member.getUser();
-		if(user.getRefId()==null && po.getUser()==null){
-			user.setRefId(IDUtils.generateId());
-		}
-		po.setUser(user);
-		
-		UserData udata = member.getUserData();
-		if(udata.getRefId()==null && po.getUserData()==null){
-			udata.setRefId(IDUtils.generateId());
-		}
-		po.setUserData(udata);
+		po.setPin(member.getPin());
+		po.setMemberType(member.getMemberType());
 		
 		memberDao.updateMember(po);
 	}

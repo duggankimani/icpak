@@ -49,6 +49,9 @@ public class CPD extends PO{
 	private Date startDate; //Copied from Event details;
 	private Date endDate;
 	private String eventId;
+	
+	@Transient
+	private String eventName;
 	private String cpdHours;
 	private CPDStatus status;
 	@Transient
@@ -127,10 +130,23 @@ public class CPD extends PO{
 		cpd.setStartDate(startDate);
 		cpd.setEndDate(endDate);
 		cpd.setEventId(eventId);
+		
+		if(cpd.getEvent()!=null){
+			cpd.setEventName(event.getName());
+		}
+		
 		cpd.setRefId(refId);
 		cpd.setStatus(status);
 		cpd.setMemberId(memberId);
 		return cpd;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 	
 }

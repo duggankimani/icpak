@@ -131,8 +131,8 @@ public class CPD extends PO{
 		cpd.setEndDate(endDate);
 		cpd.setEventId(eventId);
 		
-		if(cpd.getEvent()!=null){
-			cpd.setEventName(event.getName());
+		if(this.getEvent()!=null){
+			cpd.setEventName(this.event.getName());
 		}
 		
 		cpd.setRefId(refId);

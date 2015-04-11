@@ -103,6 +103,12 @@ public class User extends PO{
     
     private String memberId;
     
+    private String phoneNumber;
+    private String residence;
+    private String address;
+    private String city;
+    private String nationality; 
+    
     public User() {
 	}
 
@@ -128,6 +134,11 @@ public class User extends PO{
 		user.setRefId(refId);
 		user.setUsername(getUsername());
 		user.setEmail(email);
+		user.setAddress(address);
+		user.setCity(city);
+		user.setNationality(nationality);
+		user.setPhoneNumber(phoneNumber);
+		user.setResidence(residence);
 		
 		if(roles!=null){
 			Set<Role> cloneRoles  = new HashSet<>();
@@ -238,6 +249,46 @@ public class User extends PO{
 
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getResidence() {
+		return residence;
+	}
+
+	public void setResidence(String residence) {
+		this.residence = residence;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
 	}
 
 }

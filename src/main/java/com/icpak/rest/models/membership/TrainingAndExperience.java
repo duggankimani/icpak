@@ -11,9 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -47,9 +49,13 @@ public class TrainingAndExperience extends PO{
 	private String clientsHandled;
 	private Date datePassed;
 
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
+	
+	@Transient
+	private String memberId;
 	
 	@OneToMany(mappedBy="trainingAndExperience", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	Collection<Attachment> attachments;
@@ -155,4 +161,31 @@ public class TrainingAndExperience extends PO{
 	public void setReferees(Collection<Referee> referees) {
 		this.referees = referees;
 	} 
+	
+	public TrainingAndExperience clone(String ...detail){
+		if(this.member!=null)
+		this.setMemberId(member.getRefId());
+		return this;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public void copyFrom(TrainingAndExperience eduEntry) {
+		this.setClientsHandled(eduEntry.getClientsHandled());
+		this.setDatePassed(eduEntry.getDatePassed());
+		this.setEndDate(eduEntry.getEndDate());
+		this.setNatureOfTasksPerformed(eduEntry.getNatureOfTasksPerformed());
+		this.setOrganizationName(eduEntry.getOrganizationName());
+		this.setPositionHeld(eduEntry.getPositionHeld());
+		this.setReferees(eduEntry.getReferees());
+		this.setResponsibilities(eduEntry.getResponsibilities());
+		this.setStartDate(eduEntry.getStartDate());
+		this.setType(eduEntry.getType());		
+	}
 }

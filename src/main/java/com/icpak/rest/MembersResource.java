@@ -106,5 +106,49 @@ public class MembersResource extends BaseResource<Member> {
 	public CPDResource bookings(@InjectParam CPDResource resource){
 		return resource;
 	}
+	
+	/**
+	 * Member Education
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	@Path("/{memberId}/education")
+	public EducationResource education(@InjectParam EducationResource resource){
+		return resource;
+	}
+	
+	/**
+	 * Member Training And Experience
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	@Path("/{memberId}/training")
+	public TrainingAndExperienceResource bookings(@InjectParam TrainingAndExperienceResource resource){
+		return resource;
+	}
+	
+	/**
+	 * Member Training And Experience
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	@Path("/{memberId}/specialization")
+	public SpecializationResource bookings(@InjectParam SpecializationResource resource){
+		return resource;
+	}
+	
+	/**
+	 * Member Criminal Offenses
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	@Path("/{memberId}/offenses")
+	public CriminalOffensesResource bookings(@InjectParam CriminalOffensesResource resource){
+		return resource;
+	}
 
 }

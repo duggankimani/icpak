@@ -51,6 +51,12 @@ public class UsersDaoHelper {
 		
 		po.setEmail(user.getEmail());
 		po.setUsername(user.getUsername());
+		po.setAddress(user.getAddress());
+		po.setCity(user.getCity());
+		po.setNationality(user.getNationality());
+		po.setPhoneNumber(user.getPhoneNumber());
+		po.setResidence(user.getResidence());
+		
 		if(po.getUserData()==null){
 			po.setUserData(user.getUserData());
 		}else{
@@ -172,7 +178,7 @@ public class UsersDaoHelper {
 			throw new ServiceException(ErrorCodes.UNAUTHORIZEDACCESS);
 		}
 		
-		return user;
+		return user.clone();
 	}
 
 }

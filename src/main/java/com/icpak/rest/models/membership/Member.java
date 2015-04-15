@@ -30,7 +30,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Member.class})
+@XmlSeeAlso({Specialization.class, Education.class,TrainingAndExperience.class, CriminalOffense.class,CPD.class})
 
 @Entity
 @Table(name="member")

@@ -1,9 +1,14 @@
 package com.icpak.rest.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
 
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.membership.Education;
 import com.icpak.rest.models.membership.Member;
 
 /**
@@ -58,6 +63,37 @@ public class MemberDao extends BaseDao{
 		}
 		
 		return member;
+	}
+
+	public <T> T findByRefId(String refId, Class<?> clazz){
+		return findByRefId(refId, clazz, new HashMap<String, Object>(), true);
+	}
+	
+	public <T> T findByRefId(String refId, Class<?> clazz, Map<String, Object> params, boolean throwExceptionIfNull) {
+		
+		StringBuffer buff = new StringBuffer("from "+clazz.getName()+" c where c.refId=:refId");
+		
+		//Variables
+		if(params!=null){
+			for(String key: params.keySet()){
+				buff.append(" and "+key+"=:"+key);
+			}
+		}
+		Query query = getEntityManager().createQuery(buff.toString())
+				.setParameter("refId", refId);
+		//Params
+		if(params!=null){
+			for(String key: params.keySet()){
+				query.setParameter(key, params.get(key));
+			}
+		}
+		
+		T rtn = getSingleResultOrNull(query);
+		if(rtn==null && throwExceptionIfNull){
+			throw new ServiceException(ErrorCodes.NOTFOUND,clazz.getName(), "'"+refId+"'");
+		}
+		
+		return rtn;
 	}
 
 }

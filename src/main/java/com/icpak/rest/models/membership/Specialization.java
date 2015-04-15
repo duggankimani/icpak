@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,7 +22,6 @@ import com.wordnik.swagger.annotations.ApiModel;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Member.class})
 
 @Entity
 @Table(name="specialization")
@@ -31,11 +33,17 @@ public class Specialization extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="memberid")
 	private Member member;
-	
+
+	@XmlElement
 	private String specialization;
+
+	@XmlElement
+	@Transient
+	private String memberId;	
 
 	public String getSpecialization() {
 		return specialization;
@@ -51,5 +59,28 @@ public class Specialization extends PO{
 
 	public void setMember(Member member) {
 		this.member = member;
+	}
+	
+	public Specialization clone(String...details){
+		Specialization s = new Specialization();
+		s.setRefId(refId);
+		s.setSpecialization(specialization);
+		if(this.member!=null){
+			s.setMemberId(member.getRefId());
+		}
+		
+		return s;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public void copyFrom(Specialization offenseEntry) {
+		this.setSpecialization(offenseEntry.getSpecialization());
 	}
 }

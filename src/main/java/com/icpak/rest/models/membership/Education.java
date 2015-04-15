@@ -11,10 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -39,9 +41,13 @@ public class Education extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name = "memberid")
 	private Member member;
+	
+	@Transient
+	private String memberId;
 	
 	private EduType type = EduType.ACADEMIA;
 	
@@ -146,6 +152,30 @@ public class Education extends PO{
 
 	public void setType(EduType type) {
 		this.type = type;
+	}
+	
+	public Education clone(String ... details){
+		return this;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public void copyFrom(Education eduEntry) {
+		this.type = eduEntry.getType();
+		this.institution = eduEntry.getInstitution();
+		this.startDate = eduEntry.getStartDate();
+		this.dateCompleted = eduEntry.getDateCompleted();
+		this.examiningBody = eduEntry.getExaminingBody();
+		this.classOrDivision =eduEntry.getClassOrDivision();
+		this.award = eduEntry.getAward();
+		this.registrationNo = eduEntry.getRegistrationNo();
+		this.sectionsPassed = eduEntry.getSectionsPassed();
 	}
 		
 }

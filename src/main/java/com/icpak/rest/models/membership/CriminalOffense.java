@@ -6,9 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,9 +33,14 @@ public class CriminalOffense extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn(name="memberid")
 	private Member member;
+	
+	@Transient
+	private String memberId;
+	
 	private String offense;
 	private Date dateConvicted;
 	private String placeConvicted;
@@ -73,4 +80,27 @@ public class CriminalOffense extends PO{
 		this.sentenceImposed = sentenceImposed;
 	}
 	
+	public CriminalOffense clone(String ...details){
+		if(member!=null)
+			this.setMemberId(member.getRefId());
+		
+		return this;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public void copyFrom(CriminalOffense offenseEntry) {
+		this.member = offenseEntry.getMember();
+		this.memberId = offenseEntry.getMemberId();
+		this.offense = offenseEntry.getOffense();
+		this.dateConvicted = offenseEntry.getDateConvicted();
+		this.placeConvicted = offenseEntry.getPlaceConvicted();
+		this.sentenceImposed = offenseEntry.getSentenceImposed();
+	}
 }

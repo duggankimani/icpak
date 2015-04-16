@@ -5,9 +5,15 @@ import java.util.List;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.icpak.rest.BaseResource;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
@@ -24,6 +30,8 @@ import com.icpak.rest.models.membership.Member;
  *
  * @param <T>
  */
+//@JsonInclude(Include.NON_NULL)
+//@JsonSerialize(include=Inclusion.NON_NULL)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({User.class,Member.class, Event.class, CPD.class, CPDSummary.class})
@@ -36,7 +44,7 @@ public class ResourceCollectionModel<T extends ResourceModel> extends ResourceMo
 	private String previous;//href to previouspage
 	private String next; //href to next page
 	private String last;//href to last page
-	
+
 	private List<T> items = null;
 	
 	public ResourceCollectionModel() {

@@ -17,9 +17,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.cpd.CPD;
@@ -28,6 +33,8 @@ import com.wordnik.swagger.annotations.ApiModel;
 
 @ApiModel(description="Membership details of a user")
 
+//@JsonInclude(Include.NON_NULL)
+//@JsonSerialize(include=Inclusion.NON_NULL)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Specialization.class, Education.class,TrainingAndExperience.class, CriminalOffense.class,CPD.class})

@@ -43,8 +43,7 @@ public class BootstrapServletModule extends ServletModule{
         //serve("/services/*").with(GuiceContainer.class, params);
         Map<String, String> params = new HashMap<String, String>();
         params.put(PackagesResourceConfig.PROPERTY_PACKAGES, propertyPackages);
-        params.put("api.version", "1.0.0");
-        params.put("swagger.api.basepath", "http://localhost:8080/icpak/api");
+        params.put("com.sun.jersey.api.json.POJOMappingFeature","true");
         serve("/api/*").with(GuiceContainer.class, params);
           
         Map<String, String> params2 = new HashMap<String, String>();

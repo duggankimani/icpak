@@ -25,7 +25,12 @@
 	</developers>
 
 	<properties>
-		<version.jersey>1.18.1</version.jersey>
+		<!-- version.jersey>2.5.2</version.jersey -->
+		<version.jersey>2.4.1</version.jersey>
+		<version.server>2.17</version.server>
+		<version.sunjersey>1.17</version.sunjersey>
+		<!-- version.hibernate>4.0.1.Final</version.hibernate -->
+		<version.hibernate>4.3.9.Final</version.hibernate>
 		<version.guice>3.0</version.guice>
 		<version.junit>4.10</version.junit>
 		<version.servlet>2.5</version.servlet>
@@ -48,38 +53,87 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
-			<version>${version.jersey}</version>
+			<version>${version.sunjersey}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
+			<!-- groupId>com.sun.jersey</groupId -->
+			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>${version.jersey}</version>
+			<version>${version.server}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
+			<!-- groupId>com.sun.jersey</groupId -->
+			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
-			<version>${version.jersey}</version>
+			<version>${version.server}</version>
 		</dependency>
+
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-processing</artifactId>
+			<version>${version.server}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${version.server}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${version.server}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.bundles</groupId>
+			<artifactId>jaxrs-ri</artifactId>
+			<version>${version.server}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
 			<version>${version.jersey}</version>
 		</dependency>
+
+		<!-- dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-core</artifactId> 
+			<version>${version.jersey}</version> </dependency -->
+
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>${version.jersey}</version>
+			<version>${version.sunjersey}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
-			<version>${version.jersey}</version>
+			<version>${version.sunjersey}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-guice</artifactId>
+			<version>${version.sunjersey}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate4</artifactId>
 			<version>${version.jersey}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${version.jersey}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-persist</artifactId>
@@ -127,25 +181,40 @@
 		<!-- Hibernate/ JPA -->
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
-			<version>1.0.1.Final</version>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 		</dependency>
+
+		<!-- dependency> <groupId>org.hibernate.javax.persistence</groupId> <artifactId>hibernate-jpa-2.0-api</artifactId> 
+			<version>1.0.1.Final</version> </dependency -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.0.1.Final</version>
+			<version>${version.hibernate}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>4.0.1.Final</version>
+			<version>${version.hibernate}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.3.Final</version>
+		</dependency>
+
 
 		<!-- Swagger Jersey API documentation Framework -->
 		<dependency>
 			<groupId>com.wordnik</groupId>
 			<artifactId>swagger-jersey-jaxrs_2.10</artifactId>
-			<version>1.3.0</version>
+			<version>1.3.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.ws.rs</groupId>
+					<artifactId>jsr311-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Unit Tests -->
@@ -160,17 +229,16 @@
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-grizzly2</artifactId>
 			<!-- version>1.9.1</version -->
-			<version>${version.jersey}</version>
+			<version>${version.sunjersey}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-            <groupId>org.jukito</groupId>
-            <artifactId>jukito</artifactId>
-            <version>${version.jukito}</version>
-            <scope>test</scope>
-        </dependency>
 
+		<dependency>
+			<groupId>org.jukito</groupId>
+			<artifactId>jukito</artifactId>
+			<version>${version.jukito}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 
@@ -193,17 +261,17 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-surefire-plugin</artifactId>
-		        <version>2.18.1</version>
-		        <configuration>
-		          <skipTests>true</skipTests>
-		        </configuration>
-		    </plugin>
-		    
-		    <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
@@ -213,6 +281,6 @@
 					<path>/icpak</path>
 				</configuration>
 			</plugin>
-	  	</plugins>
+		</plugins>
 	</build>
 </project>

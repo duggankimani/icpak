@@ -31,7 +31,7 @@ import com.icpak.rest.models.membership.Member;
  * @param <T>
  */
 //@JsonInclude(Include.NON_NULL)
-//@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonSerialize(include=Inclusion.NON_NULL)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({User.class,Member.class, Event.class, CPD.class, CPDSummary.class})

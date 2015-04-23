@@ -18,11 +18,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.icpak.rest.DateSerializer;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.util.Attachment;
 import com.wordnik.swagger.annotations.ApiModel;
@@ -56,9 +54,7 @@ public class Education extends PO{
 	@Column(length=2000)
 	private String institution;
 	
-	@JsonSerialize(using=DateSerializer.class)
 	private Date startDate;
-	@JsonSerialize(using=DateSerializer.class)
 	private Date dateCompleted;
 	private String examiningBody;
 	private String classOrDivision;

@@ -75,7 +75,7 @@ public class RoleResource extends BaseResource<Role> {
 	@Path("/{roleId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value="Update an existing role",authorizations="Administrators", response=Role.class, 
+	@ApiOperation(value="Update an existing role", response=Role.class, 
 	consumes=MediaType.APPLICATION_JSON, produces=MediaType.APPLICATION_JSON)
 	public Response update(@Context UriInfo uriInfo, 
 			@ApiParam(value="Role Id of the role to update", required=true) @PathParam("roleId") String roleId, 

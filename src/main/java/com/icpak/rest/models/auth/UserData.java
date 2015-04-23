@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Member;
 import com.wordnik.swagger.annotations.ApiModel;
@@ -66,11 +67,13 @@ public class UserData extends PO{
     
     private Date dob;
 
+    @JsonIgnore
     @XmlTransient
     @OneToOne
     @JoinColumn(name="userid")
     private User user;
     
+    @JsonIgnore
     @XmlTransient
     @OneToOne
     @JoinColumn(name="memberid")

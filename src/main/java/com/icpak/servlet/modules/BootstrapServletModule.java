@@ -3,8 +3,12 @@ package com.icpak.servlet.modules;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.shiro.guice.web.GuiceShiroFilter;
+import javax.inject.Singleton;
 
+import org.apache.shiro.guice.web.GuiceShiroFilter;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.ServletModule;

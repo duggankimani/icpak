@@ -23,6 +23,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.icpak.rest.models.auth.User;
@@ -59,6 +60,7 @@ public class Member extends PO{
 	@Transient
 	private String userId;
 	
+	@JsonIgnore
 	@XmlTransient
 	@OneToOne(mappedBy="member",cascade=CascadeType.ALL)
 	@JoinColumn(name="userId")

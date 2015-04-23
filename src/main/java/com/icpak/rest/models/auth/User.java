@@ -26,6 +26,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -39,10 +40,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Member;
@@ -59,9 +62,12 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Member.class,UserData.class})
+@JsonSerialize(include=Inclusion.NON_NULL)
 
 @Entity
-@Table(name="user")
+@Table(name="user",indexes={
+		@Index(columnList="username",name="idx_users_username"),
+		@Index(columnList="email",name="idx_users_email")})
 @Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
 public class User extends PO{
 
@@ -73,18 +79,19 @@ public class User extends PO{
 	@ApiModelProperty(value="username", required=true)
     @Basic(optional=false)
     @Column(length=100, unique=true)
-    @Index(name="idx_users_username")
+    //@Index(name="idx_users_username")
     private String username;
 
 	@ApiModelProperty(value="user email", required=true)
     @Basic(optional=false)
-    @Index(name="idx_users_email")    
+    //@Index(name="idx_users_email")    
     private String email;
 	
     @Basic(optional=false)
     @Column(length=255)
     private String password;
     
+    @JsonIgnore
     @XmlTransient
     @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name="user_role",
@@ -97,6 +104,7 @@ public class User extends PO{
     		cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.MERGE})
     private UserData userData=null;
     
+    @JsonIgnore
     @XmlTransient
     @OneToOne(fetch=FetchType.LAZY)
     private Member member; //A system user can be a member of ICPAK

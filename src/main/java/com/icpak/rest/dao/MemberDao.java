@@ -1,5 +1,6 @@
 package com.icpak.rest.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,11 @@ import javax.persistence.Query;
 
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.membership.EduType;
 import com.icpak.rest.models.membership.Education;
 import com.icpak.rest.models.membership.Member;
+import com.icpak.rest.models.membership.TrainingAndExperience;
+import com.icpak.rest.models.membership.TrainingExperienceType;
 
 /**
  * 
@@ -94,6 +98,69 @@ public class MemberDao extends BaseDao{
 		}
 		
 		return rtn;
+	}
+
+	public int getEducationCount(Member member, EduType type) {
+		
+		Number number = null;
+		if(type==null){
+			number = getSingleResultOrNull(getEntityManager().createNativeQuery("select count(*) from education e "
+					+ "where e.type=:type and e.memberid=:memberid and e.isactive=1")
+					.setParameter("memberid", member.getId()));
+		}else{
+			number = getSingleResultOrNull(getEntityManager().createNativeQuery("select count(*) from education e "
+					+ "where e.type=:type and e.memberid=:memberid and e.isactive=1")
+					.setParameter("type", type.ordinal())
+					.setParameter("memberid", member.getId()));
+		}
+		
+		return number.intValue();
+	}
+
+	public Collection<Education> getEducation(Member member, EduType type) {
+		
+		if(type!=null){
+
+			return getResultList(getEntityManager().createQuery("FROM Education e where e.isActive=1 "
+					+ "and e.member=:member and e.type=:type")
+					.setParameter("member", member)
+					.setParameter("type", type));
+		}else{
+			return getResultList(getEntityManager().createQuery("FROM Education e where e.isActive=1 "
+					+ "and e.member=:member")
+					.setParameter("member", member));
+		}
+	}
+
+	public int getTrainingAndExpCount(Member member, TrainingExperienceType type) {
+		Number number = null;
+		if(type==null){
+			number = getSingleResultOrNull(getEntityManager().createNativeQuery("select count(*) from TrainingAndExperience e "
+					+ "where e.type=:type and e.memberid=:memberid and e.isactive=1")
+					.setParameter("memberid", member.getId()));
+		}else{
+			number = getSingleResultOrNull(getEntityManager().createNativeQuery("select count(*) from TrainingAndExperience e "
+					+ "where e.type=:type and e.memberid=:memberid and e.isactive=1")
+					.setParameter("type", type.ordinal())
+					.setParameter("memberid", member.getId()));
+		}
+		
+		return number.intValue();
+	}
+
+	public Collection<TrainingAndExperience> getTrainingAndExp(Member member,
+			TrainingExperienceType type) {
+		if(type!=null){
+
+			return getResultList(getEntityManager().createQuery("FROM TrainingAndExperience e where e.isActive=1 "
+					+ "and e.member=:member and e.type=:type")
+					.setParameter("member", member)
+					.setParameter("type", type));
+		}else{
+			return getResultList(getEntityManager().createQuery("FROM TrainingAndExperience e where e.isActive=1 "
+					+ "and e.member=:member")
+					.setParameter("member", member));
+		}
 	}
 
 }

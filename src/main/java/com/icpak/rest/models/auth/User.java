@@ -18,7 +18,9 @@
  */
 package com.icpak.rest.models.auth;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -30,6 +32,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -49,6 +52,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Member;
+import com.icpak.rest.models.util.Attachment;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -116,6 +120,9 @@ public class User extends PO{
     private String address;
     private String city;
     private String nationality; 
+    
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="user", orphanRemoval=true )
+    List<Attachment> profilePicture = new ArrayList<>();
     
     public User() {
 	}

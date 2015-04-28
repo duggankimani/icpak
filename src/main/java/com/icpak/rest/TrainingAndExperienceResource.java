@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import com.google.inject.Inject;
 import com.icpak.rest.dao.helper.TrainingAndExperienceDaoHelper;
 import com.icpak.rest.models.membership.TrainingAndExperience;
+import com.icpak.rest.models.membership.TrainingExperienceType;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -35,6 +36,42 @@ public class TrainingAndExperienceResource extends BaseResource<TrainingAndExper
 			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
 		
 		return buildCollectionResponse(helper.getAllTrainingEntrys(uriInfo, memberId, offset, limit));
+	}
+	
+	@GET
+	@Path("training")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Retrieve all active training entries")
+	public Response getAllTraining(@Context UriInfo uriInfo,
+			@ApiParam(value="Member for which training entries are requested") @PathParam("memberId") String memberId,
+			@ApiParam(value="Starting point to fetch") @QueryParam("offset") Integer offset,
+			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
+		
+		return buildCollectionResponse(helper.getAllTrainingEntrys(uriInfo, memberId, TrainingExperienceType.TRAINING, offset, limit));
+	}
+	
+	@GET
+	@Path("general")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Retrieve all active training entries")
+	public Response getAllGeneral(@Context UriInfo uriInfo,
+			@ApiParam(value="Member for which training entries are requested") @PathParam("memberId") String memberId,
+			@ApiParam(value="Starting point to fetch") @QueryParam("offset") Integer offset,
+			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
+		
+		return buildCollectionResponse(helper.getAllTrainingEntrys(uriInfo, memberId,TrainingExperienceType.TRAINING, offset, limit));
+	}
+	
+	@GET
+	@Path("audit")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Retrieve all active training entries")
+	public Response getAllAudit(@Context UriInfo uriInfo,
+			@ApiParam(value="Member for which training entries are requested") @PathParam("memberId") String memberId,
+			@ApiParam(value="Starting point to fetch") @QueryParam("offset") Integer offset,
+			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
+		
+		return buildCollectionResponse(helper.getAllTrainingEntrys(uriInfo, memberId,TrainingExperienceType.TRAINING, offset, limit));
 	}
 
 	@GET

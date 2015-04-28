@@ -10,6 +10,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.Sha256CredentialsMatcher;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
@@ -26,6 +27,7 @@ import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
 import com.icpak.rest.models.membership.Member;
+import com.icpak.rest.models.util.Attachment;
 import com.icpak.rest.security.ICPAKAuthenticatingRealm;
 
 @Transactional
@@ -179,6 +181,39 @@ public class UsersDaoHelper {
 		}
 		
 		return user.clone();
+	}
+
+	public void setProfilePic(String userId, byte[] bites, String fileName,
+			String contentType) {
+		dao.disableProfilePics(userId);
+		User user = dao.findByUserId(userId);
+		Attachment attachment = new Attachment();
+		attachment.setAttachment(bites);
+		attachment.setContentType(contentType);
+		attachment.setName(fileName);
+		attachment.setUser(user);
+		
+		dao.save(attachment);
+	}
+
+	public Attachment getProfilePic(String userId) {
+		Attachment a = dao.getProfilePic(userId);
+		
+		if(a==null){
+			throw new ServiceException(ErrorCodes.NOTFOUND, "Profile Picture ","for user "+userId);
+		}
+		
+		return a.clone("all");
+	}
+
+	public void updatePassword(String userId, String newPassword) {
+		User user = dao.findByUserId(userId);
+		if(user.getPassword()==null || user.getPassword().isEmpty()){
+			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT, "'New Password'", "'NULL'");
+		}
+		
+		user.setPassword(dao.encrypt(user.getPassword()));
+		dao.save(user);
 	}
 
 }

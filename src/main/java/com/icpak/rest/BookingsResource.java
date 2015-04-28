@@ -66,6 +66,21 @@ public class BookingsResource extends BaseResource<Booking>{
 		
 		return buildCreateEntityResponse(uri, booking);
 	}
+	
+	@POST
+	@Path("/{bookingId}/payment")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Make Payment for a booking", consumes=MediaType.APPLICATION_JSON)
+	public Response makePayment(@Context UriInfo uriInfo,
+			@ApiParam(value="Event for which payment is being made") @PathParam("eventId") String eventId,
+			@ApiParam(value="Booking for which payment is being made") @PathParam("bookingId") String bookingId,
+			@ApiParam(value="Payment Mode") @QueryParam("paymentMode") String paymentMode,
+			@ApiParam(value="Payment referenceNo") @QueryParam("paymentRef") String paymentRef) {
+		//TODO
+		helper.processPayment(eventId, bookingId, paymentMode, paymentRef);
+		return buildEmptySuccessResponse();
+	}
 
 	@PUT
 	@Path("/{bookingId}")

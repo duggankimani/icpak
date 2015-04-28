@@ -1,9 +1,19 @@
 package com.icpak.rest;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
+
+import org.apache.commons.io.IOUtils;
 
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
@@ -48,6 +58,31 @@ public abstract class BaseResource<T extends ResourceModel> {
 
 	public Integer getOffset(Integer offset) {
 		return offset==null? 0: offset;
+	}
+	
+
+	public Response buildEmptySuccessResponse() {
+		return Response.noContent().entity("Success").build();
+	}
+	
+	public Response buildFileResponse(String name, String contentType,
+			final byte[] attachment, long length) {
+		
+//		StreamingOutput stream = new StreamingOutput() {
+//		    @Override
+//		    public void write(OutputStream os) throws IOException,
+//		    WebApplicationException {
+//		      //Writer writer = new BufferedWriter(new OutputStreamWriter(os));
+//		      IOUtils.write(attachment, os);
+//		      //@TODO read the file here and write to the writer
+//
+//		      //writer.flush();
+//		    }
+//		  };
+		System.err.println("FileName= "+name);
+		return Response.ok(attachment, contentType)
+				.header("Content-Disposition", "attachment; filename="+name+"; Content-Length="+length)
+				.build();
 	}
 
 	

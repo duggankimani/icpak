@@ -1,4 +1,4 @@
-package com.icpak.rest;
+package com.icpak.rest.providers;
 
 import java.util.HashMap;
 import java.util.HashSet;

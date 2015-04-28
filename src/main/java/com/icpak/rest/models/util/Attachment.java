@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Education;
 import com.icpak.rest.models.membership.Member;
@@ -39,7 +40,6 @@ public class Attachment extends PO{
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	private String imageUserId;
 	private long size;
 	private String contentType;
 
@@ -54,6 +54,10 @@ public class Attachment extends PO{
 	@JoinColumn(name="trainingExperienceId")
 	private TrainingAndExperience trainingAndExperience;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="userid")
+	private User user;
+	
 	public Attachment() {
 		super();
 	}
@@ -97,11 +101,25 @@ public class Attachment extends PO{
 		this.contentType = contentType;
 	}
 
-	public String getImageUserId() {
-		return imageUserId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setImageUserId(String imageUserId) {
-		this.imageUserId = imageUserId;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Attachment clone(String detail) {
+		Attachment a = new Attachment();
+		
+		if(detail!=null && detail!=null){
+			a.setAttachment(attachment);
+		}
+		a.setContentType(contentType);
+		a.setName(name);
+		a.setSize(size);
+		a.setRefId(refId);
+		
+		return a;
 	}
 }

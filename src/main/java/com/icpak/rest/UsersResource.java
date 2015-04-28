@@ -1,5 +1,8 @@
 package com.icpak.rest;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,9 +17,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.io.IOUtils;
+
 import com.google.inject.Inject;
 import com.icpak.rest.dao.helper.UsersDaoHelper;
 import com.icpak.rest.models.auth.User;
+import com.icpak.rest.models.util.Attachment;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
+import com.sun.jersey.multipart.FormDataParam;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -87,7 +97,7 @@ public class UsersResource extends BaseResource<User> {
 		return buildGetEntityResponse(uri,
 				loggedIn);
 	}
-
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -98,6 +108,53 @@ public class UsersResource extends BaseResource<User> {
 		String uri = uriInfo.getAbsolutePath().toString() + "/"
 				+ user.getRefId();
 		return buildCreateEntityResponse(uri, user);
+	}
+	
+	
+	/**
+	 * To test use this uri:
+	 * <p/>
+	 * curl -v -F 'filename=POvBCBE-PO-NRB-1_1.pdf' -F 'file=@/home/duggan/Downloads/PO_BCBE-PO-NRB-1_1.pdf;type=application/pdf' http://localhost:8080/icpak/api/users/xIXcSQNcXmqMDrth/profile
+	 * <p/>
+	 * @param userId
+	 * @param inputStream
+	 * @param fileDisposition
+	 * @return
+	 * @throws IOException
+	 */
+	@POST
+	@Path("/{userId}/profile")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Upload profile photo", consumes = MediaType.MULTIPART_FORM_DATA)
+	public Response create(@ApiParam(value = "User Id of the user", required = true) @PathParam("userId") String userId,
+			@FormDataParam("file") FormDataBodyPart body,
+			@FormDataParam("file") InputStream inputStream,
+		    @FormDataParam("file") FormDataContentDisposition fileDisposition) throws IOException {
+		
+		byte[] bites = IOUtils.toByteArray(inputStream);
+		
+		String type = body.getMediaType().toString();
+		System.err.format("{userId:%s, fileName:%s, size:%d, type:%s }",userId, fileDisposition.getFileName(),
+				bites.length, type).println();
+		
+		helper.setProfilePic(userId, bites, fileDisposition.getFileName(), type);
+		
+		return buildEmptySuccessResponse();
+	}
+
+	@GET
+	@Path("/{userId}/profile")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	@ApiOperation(value = "Upload profile photo", produces = MediaType.APPLICATION_OCTET_STREAM)
+	public Response getProfile(
+			@ApiParam(value = "User Id of the user", required = true) @PathParam("userId") String userId
+			) throws IOException {
+		
+		Attachment attachment = helper.getProfilePic(userId);
+		return buildFileResponse(attachment.getName(), attachment.getContentType(),
+				attachment.getAttachment(),attachment.getSize());
 	}
 
 	@PUT
@@ -113,6 +170,20 @@ public class UsersResource extends BaseResource<User> {
 		helper.update(userId, user);
 		String uri = uriInfo.getAbsolutePath().toString();
 		return buildUpdateEntityResponse(uri, user);
+	}
+	
+	@PUT
+	@Path("/{userId}/password")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Update an existing user", consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public Response updatePassword(
+			@Context UriInfo uriInfo,
+			@ApiParam(value = "New Password", required = true) @QueryParam("newpassword") String newPassword,
+			@ApiParam(value = "User Id of the user to fetch", required = true) @PathParam("userId") String userId) {
+
+		helper.updatePassword(userId, newPassword);
+		return buildEmptySuccessResponse();
 	}
 
 	@DELETE

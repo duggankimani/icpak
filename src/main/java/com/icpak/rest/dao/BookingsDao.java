@@ -39,4 +39,8 @@ public class BookingsDao extends BaseDao {
 		return number.intValue();
 	}
 
+	public boolean isPaymentValid(String paymentRef) {
+		return false;
+	}
+
 }

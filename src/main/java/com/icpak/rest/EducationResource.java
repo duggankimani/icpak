@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import com.google.inject.Inject;
 import com.icpak.rest.dao.helper.BookingsDaoHelper;
 import com.icpak.rest.dao.helper.EducationDaoHelper;
+import com.icpak.rest.models.membership.EduType;
 import com.icpak.rest.models.membership.Education;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -36,6 +37,30 @@ public class EducationResource extends BaseResource<Education>{
 			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
 		
 		return buildCollectionResponse(helper.getAllEducationEntrys(uriInfo, memberId, offset, limit));
+	}
+	
+	@GET
+	@Path("academics")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Retrieve all active academic education entries")
+	public Response getAllAcademic(@Context UriInfo uriInfo,
+			@ApiParam(value="Member for which education entries are requested") @PathParam("memberId") String memberId,
+			@ApiParam(value="Starting point to fetch") @QueryParam("offset") Integer offset,
+			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
+		
+		return buildCollectionResponse(helper.getAllEducationEntrys(uriInfo, memberId,EduType.ACADEMIA, offset, limit));
+	}
+	
+	@GET
+	@Path("professional")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Retrieve all active professional education entries")
+	public Response getAllProfessional(@Context UriInfo uriInfo,
+			@ApiParam(value="Member for which education entries are requested") @PathParam("memberId") String memberId,
+			@ApiParam(value="Starting point to fetch") @QueryParam("offset") Integer offset,
+			@ApiParam(value="No of Items to fetch") @QueryParam("limit") Integer limit) {
+		
+		return buildCollectionResponse(helper.getAllEducationEntrys(uriInfo, memberId,EduType.PROFESSIONALACCEXAMS, offset, limit));
 	}
 
 	@GET

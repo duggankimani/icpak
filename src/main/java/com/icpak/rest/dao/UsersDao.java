@@ -5,9 +5,11 @@ import java.util.List;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 
 import com.icpak.rest.exceptions.ServiceException;
+import com.icpak.rest.models.ErrorCode;
 import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.auth.Role;
 import com.icpak.rest.models.auth.User;
+import com.icpak.rest.models.util.Attachment;
 
 public class UsersDao extends BaseDao{
 
@@ -20,9 +22,13 @@ public class UsersDao extends BaseDao{
 
     public void createUser(User user) {
     	if(user.getPassword()!=null && user.getId()==null)
-    		user.setPassword(new Sha256Hash(user.getPassword()).toHex());
+    		user.setPassword(encrypt(user.getPassword()));
     	
         save( user );
+    }
+    
+    public String encrypt(String password){
+    	return new Sha256Hash(password).toHex();
     }
 
     public List<User> getAllUsers(Integer offSet, Integer limit, Role role) {
@@ -76,5 +82,28 @@ public class UsersDao extends BaseDao{
 		}
 		
 		return user;
+	}
+
+	public int disableProfilePics(String userId) {
+		User user = findByUserId(userId);
+		
+		String update = "UPDATE Attachment set isActive=0 where user=:user";
+		int rows = getEntityManager().createQuery(update)
+				.setParameter("user", user).executeUpdate();
+		
+		return rows;
+	}
+
+	public Attachment getProfilePic(String userId) {
+		
+		String sql = "SELECT a FROM Attachment a where a.isActive=1 and a.user.refId=:userid";
+		
+		Attachment attachment=getSingleResultOrNull(getEntityManager()
+				.createQuery(sql)
+				.setParameter("userid", userId));
+		if(attachment==null){
+			throw new ServiceException(ErrorCodes.NOTFOUND, "Profile Picture", " for user "+userId);
+		}
+		return attachment;
 	}
 }

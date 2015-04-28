@@ -13,6 +13,8 @@ import com.icpak.rest.IDUtils;
 import com.icpak.rest.dao.BookingsDao;
 import com.icpak.rest.dao.EventsDao;
 import com.icpak.rest.dao.UsersDao;
+import com.icpak.rest.exceptions.ServiceException;
+import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.event.Booking;
 import com.icpak.rest.models.event.Delegate;
@@ -132,6 +134,24 @@ public class BookingsDaoHelper {
 	public void deleteBooking(String eventId, String bookingId) {
 		Booking booking = dao.getByBookingId(bookingId);
 		dao.delete(booking);
+	}
+
+	public void processPayment(String eventId, String bookingId,
+			String paymentMode, String paymentRef) {
+		Booking booking = dao.getByBookingId(bookingId);
+		//Check if payment ref already exists
+		boolean exists = dao.isPaymentValid(paymentRef);
+		if(exists){
+			throw new ServiceException(ErrorCodes.DUPLICATEVALUE, "Payment Ref");
+		}
+		
+		if(booking!=null){
+			booking.setPaymentRef(paymentRef);
+			booking.setPaymentMode(paymentMode);
+			booking.setPaymentDate(new Date());
+		}
+		
+		dao.save(booking);
 	}
 
 }

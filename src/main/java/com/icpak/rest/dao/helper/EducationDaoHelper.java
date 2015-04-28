@@ -11,6 +11,7 @@ import com.google.inject.persist.Transactional;
 import com.icpak.rest.dao.MemberDao;
 import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.models.base.ResourceCollectionModel;
+import com.icpak.rest.models.membership.EduType;
 import com.icpak.rest.models.membership.Education;
 import com.icpak.rest.models.membership.Member;
 
@@ -29,6 +30,27 @@ public class EducationDaoHelper {
 				size,uriInfo);
 		Collection<Education> list = member.getEducation();
 		
+		List<Education> clones = new ArrayList<>();
+		for(Education eduEntry: list){
+			Education clone = eduEntry.clone();
+			clone.setUri(uriInfo.getAbsolutePath()+"/"+clone.getRefId());
+			clone.setMemberId(memberId);
+			clones.add(clone);
+		}
+		
+		educationEntries.setItems(clones);
+		return educationEntries;
+	}
+	
+	public ResourceCollectionModel<Education> getAllEducationEntrys(UriInfo uriInfo, 
+			String memberId,EduType type, Integer offset,	Integer limit) {
+		Member member = dao.findByMemberId(memberId);
+		int size =dao.getEducationCount(member, type);
+		Collection<Education> list = dao.getEducation(member, type);
+		
+		ResourceCollectionModel<Education> educationEntries = new ResourceCollectionModel<>(offset,limit,
+				size,uriInfo);
+
 		List<Education> clones = new ArrayList<>();
 		for(Education eduEntry: list){
 			Education clone = eduEntry.clone();

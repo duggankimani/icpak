@@ -3,6 +3,7 @@ package com.icpak.rest.models.membership;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,9 @@ public class TrainingAndExperience extends PO{
 	private String positionHeld;
 	private String natureOfTasksPerformed; // Training tasks
 	private String responsibilities;
-	private TrainingExperienceType type;
+	
+	@Basic(optional=false)
+	private TrainingExperienceType type = TrainingExperienceType.TRAINING;
 	private String clientsHandled;
 	private Date datePassed;
 

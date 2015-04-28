@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -48,17 +49,23 @@ public class Booking extends PO{
 			cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	private Contact contact;
 	
-	private String paymentMode;
+	private String paymentMode;//MPesa, VISA etc
 	private String currency;
 	private Date bookingDate;
 	
 	@Transient
 	private String eventId;
 	
-	private String paymentRef;
-	private Date paymentDate;
 	private String status; //DRAFT/ PAID
 	private int delegatesCount;
+
+	//Payment
+	@Column(unique=true)
+	private String paymentRef; //TrxNumber
+	private Date paymentDate;
+	private Double amountDue;
+	private Double amountPaid;
+	private PaymentStatus paymentStatus= PaymentStatus.PAID;
 	
 	@OneToMany(mappedBy="booking",fetch=FetchType.LAZY,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	private Collection<Delegate> delegates = new HashSet<>();
@@ -212,6 +219,30 @@ public class Booking extends PO{
 
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
+	}
+
+	public Double getAmountDue() {
+		return amountDue;
+	}
+
+	public void setAmountDue(Double amountDue) {
+		this.amountDue = amountDue;
+	}
+
+	public Double getAmountPaid() {
+		return amountPaid;
+	}
+
+	public void setAmountPaid(Double amountPaid) {
+		this.amountPaid = amountPaid;
+	}
+
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 	
 }

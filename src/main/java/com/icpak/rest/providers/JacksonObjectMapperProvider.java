@@ -36,8 +36,8 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         .configure(SerializationFeature.INDENT_OUTPUT, false)
-        .setSerializationInclusion(Include.NON_NULL)
-        .setSerializationInclusion(Include.NON_EMPTY)
+        //.setSerializationInclusion(Include.NON_NULL)
+        //.setSerializationInclusion(Include.NON_EMPTY)
         .registerModule(new ICPAKSerializationModule());
         
         Hibernate4Module hibernate4Module = new Hibernate4Module();

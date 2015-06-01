@@ -8,6 +8,9 @@ public class IDUtils {
 		//String uuid = UUID.randomUUID().toString();
 		//uuid.replaceAll("-", "");
 		return RandomStringUtils.random(16, true, true);
-		
+	}
+	
+	public static String generateTempPassword(){
+		return RandomStringUtils.random(6,true,true);
 	}
 }

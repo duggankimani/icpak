@@ -12,10 +12,13 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import com.icpak.rest.IDUtils;
 import com.icpak.rest.dao.ApplicationFormDao;
 import com.icpak.rest.dao.MemberDao;
+import com.icpak.rest.dao.UsersDao;
 import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
+import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.membership.ApplicationFormHeader;
 import com.icpak.rest.models.membership.ApplicationType;
@@ -33,6 +36,7 @@ public class ApplicationFormDaoHelper {
 	
 	@Inject ApplicationFormDao applicationDao;
 	@Inject MemberDao memberDao;
+	@Inject UsersDao userDao;
 	
 	public void createApplication(ApplicationFormHeader application){
 		if(application.getRefId()!=null){
@@ -46,20 +50,39 @@ public class ApplicationFormDaoHelper {
 //		applicationDao.createApplication(application);
 		
 		applicationDao.createApplication(application);
-		
-		sendEmail(application);
-		
-		setCategory(application);		
+				
+		setCategory(application);	
+		User user = createTempUser(application);
+		sendEmail(application, user);
 		assert application.getId()!=null;
 	}
 	
+	private User createTempUser(ApplicationFormHeader application) {
+		User po = new User();
+		po.setEmail(application.getEmail());
+		//po.setUsername(user.getUsername());
+		po.setAddress(application.getAddress1());
+		po.setCity(application.getCity1());
+		po.setNationality(application.getNationality());
+		
+		String password = IDUtils.generateTempPassword();
+		po.setPassword(password);
+		
+		userDao.createUser(po);
+		
+		User u = po.clone();
+		u.setPassword(password);
+		
+		return u;
+	}
+
 	private void setCategory(ApplicationFormHeader application) {
 		ApplicationType type = application.getApplicationType();
 		Category category = applicationDao.findApplicationCategory(type);
 		application.setCategory(category);
 	}
 
-	private void sendEmail(ApplicationFormHeader application) {
+	private void sendEmail(ApplicationFormHeader application,User user) {
 		
 		try{
 			Map<String,Object> values  = new HashMap<String, Object>();
@@ -68,7 +91,9 @@ public class ApplicationFormDaoHelper {
 			values.put("quoteNo", application.getId());
 			values.put("date", application.getDate());
 			values.put("firstName", application.getOtherNames());
-			
+			values.put("DocumentURL", "http://www.solutech.co.ke/icpak/");
+			values.put("email", application.getEmail());
+			values.put("password", user.getPassword());
 			Doc doc = new Doc(values);
 			
 			ApplicationType type = application.getApplicationType();

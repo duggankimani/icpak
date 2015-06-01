@@ -56,7 +56,7 @@ public class ApplicationFormResource extends BaseResource<ApplicationFormHeader>
 	@ApiOperation(value="Create a new application", response=ApplicationFormHeader.class, consumes=MediaType.APPLICATION_JSON)
 	public Response create(@Context UriInfo uriInfo, ApplicationFormHeader application) {
 		
-		//helper.createApplication(application);
+		helper.createApplication(application);
 		String uri = uriInfo.getAbsolutePath().toString()+"/"+application.getRefId();
 		return buildCreateEntityResponse(uri, application);
 	}
@@ -70,7 +70,7 @@ public class ApplicationFormResource extends BaseResource<ApplicationFormHeader>
 	public Response update(@Context UriInfo uriInfo, 
 			@ApiParam(value="ApplicationFormHeader Id of the application to update", required=true) @PathParam("applicationId") String applicationId, 
 			ApplicationFormHeader application) {
-		//helper.updateApplication(applicationId, application);
+		helper.updateApplication(applicationId, application);
 		return buildUpdateEntityResponse(uriInfo.getAbsolutePath().toString(),application);
 	}
 

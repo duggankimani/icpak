@@ -61,6 +61,7 @@ public class ApplicationFormDaoHelper {
 		User po = new User();
 		po.setEmail(application.getEmail());
 		//po.setUsername(user.getUsername());
+		po.setRefId(application.getRefId());
 		po.setAddress(application.getAddress1());
 		po.setCity(application.getCity1());
 		po.setNationality(application.getNationality());

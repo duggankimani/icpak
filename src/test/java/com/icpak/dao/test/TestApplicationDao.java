@@ -43,7 +43,7 @@ public class TestApplicationDao extends AbstractDaoTest{
 	public void createApplication(){
 		Application application = new Application();
 		application.setStatus(ApplicationStatus.DRAFT);
-		application.setApplicationType(ApplicationType.MEMBER);
+		application.setApplicationType(ApplicationType.NON_PRACTISING);
 		application.setApprovalMinNo("0");
 		application.setAuditDetails(null);
 		application.setEmplSector(IndustrySector.BANKING);
@@ -56,7 +56,7 @@ public class TestApplicationDao extends AbstractDaoTest{
 		
 		application = new Application();
 		application.setStatus(ApplicationStatus.DRAFT);
-		application.setApplicationType(ApplicationType.MEMBER);
+		application.setApplicationType(ApplicationType.NON_PRACTISING);
 		application.setApprovalMinNo("0");
 		application.setAuditDetails(null);
 		application.setEmplSector(IndustrySector.BANKING);
@@ -72,7 +72,7 @@ public class TestApplicationDao extends AbstractDaoTest{
 		
 		Application application = new Application();
 		application.setStatus(ApplicationStatus.DRAFT);
-		application.setApplicationType(ApplicationType.MEMBER);
+		application.setApplicationType(ApplicationType.NON_PRACTISING);
 		application.setApprovalMinNo("324");
 		application.setAuditDetails(null);
 		application.setEmplSector(IndustrySector.BANKING);

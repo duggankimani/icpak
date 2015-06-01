@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -45,8 +46,9 @@ public class Booking extends PO{
 	
 	private String companyName;
 	
-	@OneToOne(mappedBy="booking", 
-			cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+//	@OneToOne(mappedBy="booking", 
+//			cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+	@Embedded
 	private Contact contact;
 	
 	private String paymentMode;//MPesa, VISA etc
@@ -123,7 +125,7 @@ public class Booking extends PO{
 		booking.setPaymentDate(paymentDate);
 		booking.setPaymentMode(paymentMode);
 		
-		booking.setContact(contact);
+		//booking.setContact(contact);
 		booking.setCompanyName(companyName);
 		booking.setCurrency(currency);
 		if(delegates!=null)
@@ -169,13 +171,13 @@ public class Booking extends PO{
 		this.companyName = companyName;
 	}
 
-	public Contact getContact() {
-		return contact;
-	}
-
-	public void setContact(Contact contact) {
-		this.contact = contact;
-	}
+//	public Contact getContact() {
+//		return contact;
+//	}
+//
+//	public void setContact(Contact contact) {
+//		this.contact = contact;
+//	}
 
 	public String getPaymentMode() {
 		return paymentMode;

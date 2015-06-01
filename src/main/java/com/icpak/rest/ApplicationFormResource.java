@@ -15,18 +15,20 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.inject.Inject;
+import com.icpak.rest.dao.helper.ApplicationFormDaoHelper;
 import com.icpak.rest.dao.helper.ApplicationsDaoHelper;
-import com.icpak.rest.models.membership.Application;
+import com.icpak.rest.models.membership.ApplicationFormHeader;
+import com.icpak.rest.models.membership.ApplicationFormHeader;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 
 
-@Path("applicationsprev")
-@Api(value="applicationsprev", description="Handles CRUD for Applications")
-public class ApplicationsResource extends BaseResource<Application>{
+@Path("applications")
+@Api(value="applications", description="Handles CRUD for Applications")
+public class ApplicationFormResource extends BaseResource<ApplicationFormHeader>{
 
-	@Inject ApplicationsDaoHelper helper;
+	@Inject ApplicationFormDaoHelper helper;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,9 +42,9 @@ public class ApplicationsResource extends BaseResource<Application>{
 	@GET
 	@Path("/{applicationId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value="Get a application by applicationId", response=Application.class, consumes=MediaType.APPLICATION_JSON)
+	@ApiOperation(value="Get a application by applicationId", response=ApplicationFormHeader.class, consumes=MediaType.APPLICATION_JSON)
 	public Response getById(@Context UriInfo uriInfo, 
-			@ApiParam(value="Application Id of the application to fetch", required=true) @PathParam("applicationId") String applicationId) {
+			@ApiParam(value="ApplicationFormHeader Id of the application to fetch", required=true) @PathParam("applicationId") String applicationId) {
 		
 		String uri = uriInfo.getAbsolutePath().toString();
 		return buildGetEntityResponse(uri, helper.getApplicationById(applicationId));
@@ -51,10 +53,10 @@ public class ApplicationsResource extends BaseResource<Application>{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value="Create a new application", response=Application.class, consumes=MediaType.APPLICATION_JSON)
-	public Response create(@Context UriInfo uriInfo, Application application) {
+	@ApiOperation(value="Create a new application", response=ApplicationFormHeader.class, consumes=MediaType.APPLICATION_JSON)
+	public Response create(@Context UriInfo uriInfo, ApplicationFormHeader application) {
 		
-		helper.createApplication(application);
+		//helper.createApplication(application);
 		String uri = uriInfo.getAbsolutePath().toString()+"/"+application.getRefId();
 		return buildCreateEntityResponse(uri, application);
 	}
@@ -63,12 +65,12 @@ public class ApplicationsResource extends BaseResource<Application>{
 	@Path("/{applicationId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value="Update an existing application", response=Application.class, 
+	@ApiOperation(value="Update an existing application", response=ApplicationFormHeader.class, 
 	consumes=MediaType.APPLICATION_JSON, produces=MediaType.APPLICATION_JSON)
 	public Response update(@Context UriInfo uriInfo, 
-			@ApiParam(value="Application Id of the application to update", required=true) @PathParam("applicationId") String applicationId, 
-			Application application) {
-		helper.updateApplication(applicationId, application);
+			@ApiParam(value="ApplicationFormHeader Id of the application to update", required=true) @PathParam("applicationId") String applicationId, 
+			ApplicationFormHeader application) {
+		//helper.updateApplication(applicationId, application);
 		return buildUpdateEntityResponse(uriInfo.getAbsolutePath().toString(),application);
 	}
 
@@ -77,7 +79,7 @@ public class ApplicationsResource extends BaseResource<Application>{
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value="Delete an existing application")
 	public Response delete(
-			@ApiParam(value="Application Id of the application to delete", required=true) @PathParam("applicationId") String applicationId) {
+			@ApiParam(value="ApplicationFormHeader Id of the application to delete", required=true) @PathParam("applicationId") String applicationId) {
 		
 		helper.deleteApplication(applicationId);
 		return buildDeleteEntityResponse();

@@ -16,7 +16,7 @@ import com.icpak.rest.models.auth.Gender;
 import com.icpak.rest.models.auth.Permission;
 import com.icpak.rest.models.auth.Role;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
+import com.icpak.rest.models.auth.BioData;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 
 public class TestUserDao extends AbstractDaoTest{
@@ -41,9 +41,9 @@ public class TestUserDao extends AbstractDaoTest{
 	public void createUser(){
 		User user = new User();
 		user.setEmail("mimi@test.org");
-		user.setUsername("Mimi");
+		//user.setUsername("Mimi");
 		user.setPassword("passwd");
-		UserData data = new UserData();
+		BioData data = new BioData();
 		data.setFirstName("Mimi");
 		data.setLastName("Testing");
 		data.setGender(Gender.FEMALE);
@@ -55,9 +55,9 @@ public class TestUserDao extends AbstractDaoTest{
 		
 		user = new User();
 		user.setEmail("wewe@test.org");
-		user.setUsername("Wewe");
+		//user.setUsername("Wewe");
 		user.setPassword("passwd");
-		data = new UserData();
+		data = new BioData();
 		data.setFirstName("Mimi");
 		data.setLastName("Testing");
 		data.setGender(Gender.FEMALE);

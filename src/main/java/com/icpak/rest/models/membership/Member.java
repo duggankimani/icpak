@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -26,6 +27,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.icpak.rest.models.auth.BioData;
 import com.icpak.rest.models.auth.User;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.cpd.CPD;
@@ -56,6 +58,12 @@ public class Member extends PO{
 	private int hasConvictions=0;
 	private String pin;
 	private MemberType memberType; // Member, AssociateMember, Practicing Member
+	
+	@Embedded
+	private Contact contact;
+	
+	@Embedded
+	BioData bioData;
 	
 	@Transient
 	private String userId;
@@ -246,6 +254,11 @@ public class Member extends PO{
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getFullNames() {
+		
+		return this.bioData.getFullNames();
 	}
 
 }

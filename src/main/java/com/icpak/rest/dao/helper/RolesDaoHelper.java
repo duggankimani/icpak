@@ -94,7 +94,7 @@ public class RolesDaoHelper {
 		boolean isAssigned = dao.checkAssigned(role, user);
 		
 		if(!isAssigned){
-			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT,"User "+user.getUsername()
+			throw new ServiceException(ErrorCodes.ILLEGAL_ARGUMENT,"User "+user.getEmail()
 					+" is not assigned role"+role.getName(),":Get Request");
 		}
 		

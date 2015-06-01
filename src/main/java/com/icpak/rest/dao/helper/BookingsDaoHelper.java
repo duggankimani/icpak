@@ -61,8 +61,8 @@ public class BookingsDaoHelper {
 		booking.setBookingDate(new Date());
 		booking.setStatus(booking.getStatus());
 		
-		Contact c = booking.getContact();
-		booking.setContact(null);
+//		Contact c = booking.getContact();
+//		booking.setContact(null);
 		booking.setEvent(eventDao.getByEventId(eventId));
 		
 		if(booking.getDelegates()!=null)
@@ -72,11 +72,11 @@ public class BookingsDaoHelper {
 		
 		dao.save(booking);
 		
-		if(c!=null){			
-			c.setBooking(booking);
-			dao.save(c);
-			booking.setContact(c);
-		}
+//		if(c!=null){			
+//			c.setBooking(booking);
+//			dao.save(c);
+//			booking.setContact(c);
+//		}
 		
 		assert booking.getId()!=null;
 		
@@ -93,21 +93,21 @@ public class BookingsDaoHelper {
 		poBooking.setPaymentMode(booking.getPaymentMode());
 		poBooking.setPaymentDate(booking.getPaymentDate());
 		
-		if(booking.getContact()!=null){
-			Contact poContact = poBooking.getContact();
-			if(poContact==null){
-				poContact = new Contact();
-			}
-			
-			Contact contact = booking.getContact();
-			poContact.setCity(contact.getCity());
-			poContact.setCountry(contact.getCountry());
-			poContact.setContactName(contact.getContactName());
-			poContact.setPhysicalAddress(contact.getPhysicalAddress());
-			poContact.setPostalCode(contact.getPostalCode());
-			poContact.setEmail(contact.getEmail());
-			poContact.setFax(contact.getFax());
-		}
+//		if(booking.getContact()!=null){
+//			Contact poContact = poBooking.getContact();
+//			if(poContact==null){
+//				poContact = new Contact();
+//			}
+//			
+//			Contact contact = booking.getContact();
+//			poContact.setCity(contact.getCity());
+//			poContact.setCountry(contact.getCountry());
+//			poContact.setContactName(contact.getContactName());
+//			poContact.setPhysicalAddress(contact.getPhysicalAddress());
+//			poContact.setPostalCode(contact.getPostalCode());
+//			poContact.setEmail(contact.getEmail());
+//			poContact.setFax(contact.getFax());
+//		}
 		
 		Collection<Delegate> delegates = booking.getDelegates();
 		poBooking.setDelegates(delegates);

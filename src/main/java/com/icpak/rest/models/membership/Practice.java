@@ -70,8 +70,8 @@ public class Practice extends PO{
 	@OneToMany(mappedBy="practice", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private Collection<Partner> partners;
 	
-	@OneToMany(mappedBy="practice", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private Collection<Contact> contacts;
+//	@OneToMany(mappedBy="practice", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+//	private Collection<Contact> contacts;
 
 	public Practice clone(String string) {
 		return this;

@@ -46,8 +46,8 @@ public class Branch extends PO{
 	
 	private String practicingCertNo;
 	
-	@OneToMany(mappedBy="branch")
-	private Collection<Contact> contacts = new HashSet<>();
+//	@OneToMany(mappedBy="branch")
+//	private Collection<Contact> contacts = new HashSet<>();
 
 	public String getName() {
 		return name;
@@ -73,13 +73,13 @@ public class Branch extends PO{
 		this.practicingCertNo = practicingCertNo;
 	}
 
-	public Collection<Contact> getContacts() {
-		return contacts;
-	}
-
-	public void setContacts(Collection<Contact> contacts) {
-		this.contacts = contacts;
-	}
+//	public Collection<Contact> getContacts() {
+//		return contacts;
+//	}
+//
+//	public void setContacts(Collection<Contact> contacts) {
+//		this.contacts = contacts;
+//	}
 
 	public Practice getPractice() {
 		return practice;

@@ -156,7 +156,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		//user
 		User user = new User();
 		user.setEmail("mimi@test.org");
-		user.setUsername("Mimi");
+		//user.setUsername("Mimi");
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
@@ -178,7 +178,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		//user
 		user = new User();
 		user.setEmail("wewe@test.org");
-		user.setUsername("Wewe");
+		//user.setUsername("Wewe");
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
@@ -201,7 +201,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		//user
 		User user = new User();
 		user.setEmail("mimi1@test.org");
-		user.setUsername("Mimi1");
+		//user.setUsername("Mimi1");
 		user.setPassword("passwd");
 		member.setUser(user);
 		//userdata
@@ -222,7 +222,7 @@ public class TestMemberDao extends AbstractDaoTest{
 		//user
 		user = new User();
 		user.setEmail("wewe1@test.org");
-		user.setUsername("Wewe1");
+		//user.setUsername("Wewe1");
 		user.setPassword("passwd1");
 		member.setUser(user);
 		//userdata

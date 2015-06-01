@@ -22,7 +22,7 @@ import com.icpak.rest.exceptions.ServiceException;
 import com.icpak.rest.models.ErrorCodes;
 import com.icpak.rest.models.auth.Role;
 import com.icpak.rest.models.auth.User;
-import com.icpak.rest.models.auth.UserData;
+import com.icpak.rest.models.auth.BioData;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.ResourceCollectionModel;
 import com.icpak.rest.models.base.ResourceModel;
@@ -52,7 +52,7 @@ public class UsersDaoHelper {
 		User po = dao.findByUserId(userId);
 		
 		po.setEmail(user.getEmail());
-		po.setUsername(user.getUsername());
+		//po.setUsername(user.getUsername());
 		po.setAddress(user.getAddress());
 		po.setCity(user.getCity());
 		po.setNationality(user.getNationality());
@@ -62,7 +62,7 @@ public class UsersDaoHelper {
 		if(po.getUserData()==null){
 			po.setUserData(user.getUserData());
 		}else{
-			UserData data = po.getUserData();
+			BioData data = po.getUserData();
 			data.setAgeGroup(user.getUserData().getAgeGroup());
 			data.setCounty(user.getUserData().getCounty());
 			data.setDob(user.getUserData().getDob());
@@ -191,7 +191,7 @@ public class UsersDaoHelper {
 		attachment.setAttachment(bites);
 		attachment.setContentType(contentType);
 		attachment.setName(fileName);
-		attachment.setUser(user);
+		//attachment.setUser(user);
 		
 		dao.save(attachment);
 	}

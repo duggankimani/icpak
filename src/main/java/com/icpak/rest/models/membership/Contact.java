@@ -1,6 +1,7 @@
 package com.icpak.rest.models.membership;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,24 +27,56 @@ import com.wordnik.swagger.annotations.ApiModel;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Member.class})
 
-@Entity
-@Table(name="contact")
+//@Entity
+//@Table(name="contact")
+@Embeddable
 @Cache(usage= CacheConcurrencyStrategy.READ_WRITE)
-public class Contact extends PO{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Contact{
 
 	/**
 	 * 
 	 */
 	private ContactType type;
 	private boolean isPrimaryContact;
-	private String email;
-
+	
+	@Column(name="`Address`",  columnDefinition="varchar(50)")
+	private String address;
+	
+	@Column(name="`Address 2`", columnDefinition="varchar(50)")
+	private String address2;
+	
+	@Column(name="`City`", columnDefinition="varchar(30)")
+	private String city;
+	
+	@Column(name="`Contact`", columnDefinition="varchar(50)")
+	private String contactName;
+	
+	@Column(name="`Phone No_`", columnDefinition="varchar(37)")
 	private String telephoneNumbers;
+	
+	@Column(name="`Telex No_`", columnDefinition="varchar(20)")
+	private String telexNo;
+	
+	@Column(name="`Territory Code`", columnDefinition="varchar(10)")
+	private String territoryCode;
+	
+	@Column(name="`Fax No_`", columnDefinition="varchar(30)")
+	private String fax;
+	
+	@Column(name="`Telex Answer Back`", columnDefinition="varchar(20)")
+	private String telexAnswerBack;
+	
+	@Column(name="`Post Code`", columnDefinition="varchar(20)")
+	private String postCode;
+	
+	@Column(name="`County`", columnDefinition="varchar(20)")
+	private String county;
+	
+	@Column(name="`E-Mail`", columnDefinition="varchar(80)")
+	private String email;
+	
+	@Column(name="`Home Page`", columnDefinition="varchar(60)")
+	private String website;
 	
 	private String mobileNumbers;
 	
@@ -52,31 +85,11 @@ public class Contact extends PO{
 	
 	private String postalCode;
 	
-	@ManyToOne
-	@JoinColumn(name="memberid")
-	private Member member;
-	
-	private String contactName;
-	
-	@ManyToOne
-	@JoinColumn(name="practiceid")
-	private Practice practice;
-	
-	@ManyToOne
-	@JoinColumn(name="branchid")
-	private Branch branch;
-	
-	private String website;
-	
-	private String fax;
-	
-	private String city;
-	
 	private String country;
 	
-	@OneToOne
-	@XmlTransient
-	private Booking booking;
+//	@OneToOne
+//	@XmlTransient
+//	private Booking booking;
 	
 
 	public ContactType getType() {
@@ -119,14 +132,6 @@ public class Contact extends PO{
 		this.postalCode = postalCode;
 	}
 
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
 	public String getContactName() {
 		return contactName;
 	}
@@ -134,23 +139,7 @@ public class Contact extends PO{
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
 	}
-
-	public Practice getPractice() {
-		return practice;
-	}
-
-	public void setPractice(Practice practice) {
-		this.practice = practice;
-	}
-
-	public Branch getBranch() {
-		return branch;
-	}
-
-	public void setBranch(Branch branch) {
-		this.branch = branch;
-	}
-
+	
 	public String getWebsite() {
 		return website;
 	}
@@ -199,11 +188,4 @@ public class Contact extends PO{
 		this.mobileNumbers = mobileNumbers;
 	}
 
-	public Booking getBooking() {
-		return booking;
-	}
-
-	public void setBooking(Booking booking) {
-		this.booking = booking;
-	}
 }

@@ -18,9 +18,7 @@
  */
 package com.icpak.rest.models.auth;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -32,11 +30,11 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -52,7 +50,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.icpak.rest.models.base.ExpandTokens;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Member;
-import com.icpak.rest.models.util.Attachment;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -65,7 +62,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Member.class,UserData.class})
+@XmlSeeAlso({Member.class,BioData.class})
 @JsonSerialize(include=Inclusion.NON_NULL)
 
 @Entity
@@ -104,9 +101,8 @@ public class User extends PO{
     @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
     private Set<Role> roles = new HashSet<Role>();
     
-    @OneToOne(mappedBy="user", 
-    		cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.MERGE})
-    private UserData userData=null;
+    @Transient
+    private BioData userData=null;
     
     @JsonIgnore
     @XmlTransient
@@ -120,9 +116,6 @@ public class User extends PO{
     private String address;
     private String city;
     private String nationality; 
-    
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="user", orphanRemoval=true )
-    List<Attachment> profilePicture = new ArrayList<>();
     
     public User() {
 	}
@@ -147,7 +140,7 @@ public class User extends PO{
 		
 		User user = new User();
 		user.setRefId(refId);
-		user.setUsername(getUsername());
+		//user.setUsername(getUsername());
 		user.setEmail(email);
 		user.setAddress(address);
 		user.setCity(city);
@@ -201,11 +194,11 @@ public class User extends PO{
 		return user;
 	}
 
-	public UserData getUserData() {
+	public BioData getUserData() {
 		return userData;
 	}
 
-	public void setUserData(UserData userData) {
+	public void setUserData(BioData userData) {
 		this.userData = userData;
 		
 		if(userData!=null)
@@ -223,7 +216,7 @@ public class User extends PO{
 	public void copy(User user) {
 		setEmail(user.getEmail());
 		setPassword(user.getPassword());
-		setUsername(user.getUsername());
+		//setUsername(user.getUsername());
 	}
 
 	public Member getMember() {
@@ -234,20 +227,13 @@ public class User extends PO{
 		this.member = member;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+		this.username = email;
 	}
 
 	public String getPassword() {
@@ -304,6 +290,10 @@ public class User extends PO{
 
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
+	}
+	
+	public String getFullName(){
+		return member.getFullNames();
 	}
 
 }

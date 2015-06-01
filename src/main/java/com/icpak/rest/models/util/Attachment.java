@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.icpak.rest.models.auth.User;
+import com.icpak.rest.models.auth.BioData;
 import com.icpak.rest.models.base.PO;
 import com.icpak.rest.models.membership.Education;
 import com.icpak.rest.models.membership.Member;
@@ -53,10 +53,6 @@ public class Attachment extends PO{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="trainingExperienceId")
 	private TrainingAndExperience trainingAndExperience;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="userid")
-	private User user;
 	
 	public Attachment() {
 		super();
@@ -99,14 +95,6 @@ public class Attachment extends PO{
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public Attachment clone(String detail) {

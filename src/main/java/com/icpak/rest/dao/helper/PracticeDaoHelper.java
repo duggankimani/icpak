@@ -92,31 +92,31 @@ public class PracticeDaoHelper {
 	public Branch updateBranch(String branchId, Branch branch) {
 		
 		Branch po = dao.getBranch(branchId, true);
-		
-		if(branch.getContacts()!=null){
-			List<Contact> contacts = new ArrayList<>();
-			for(Contact contact: branch.getContacts()){
-				if(contact.getRefId()!=null){
-					Contact contactPO = userDao.findByRef(Contact.class, contact.getRefId(), true);
-					contactPO.setContactName(contact.getContactName());
-					contactPO.setEmail(contact.getEmail());
-					contactPO.setFax(contact.getFax());
-					if(contact.getMember()!=null && contact.getMember().getRefId()!=null){
-						Member member = userDao.findByRef(Member.class, contact.getMember().getRefId(), true);
-						contactPO.setMember(member);
-					}
-					contactPO.setMobileNumbers(contact.getMobileNumbers());
-					contactPO.setPhysicalAddress(contact.getPhysicalAddress());
-					contactPO.setPostalCode(contact.getPostalCode());
-					contactPO.setPrimaryContact(contact.isPrimaryContact());
-					contactPO.setTelephoneNumbers(contact.getTelephoneNumbers());
-					contactPO.setType(contact.getType());
-					contactPO.setWebsite(contact.getWebsite());
-					contacts.add(contactPO);
-				}
-			}
-			po.setContacts(contacts);
-		}
+//		
+//		if(branch.getContacts()!=null){
+//			List<Contact> contacts = new ArrayList<>();
+//			for(Contact contact: branch.getContacts()){
+//				if(contact.getRefId()!=null){
+//					Contact contactPO = userDao.findByRef(Contact.class, contact.getRefId(), true);
+//					contactPO.setContactName(contact.getContactName());
+//					contactPO.setEmail(contact.getEmail());
+//					contactPO.setFax(contact.getFax());
+//					if(contact.getMember()!=null && contact.getMember().getRefId()!=null){
+//						Member member = userDao.findByRef(Member.class, contact.getMember().getRefId(), true);
+//						contactPO.setMember(member);
+//					}
+//					contactPO.setMobileNumbers(contact.getMobileNumbers());
+//					contactPO.setPhysicalAddress(contact.getPhysicalAddress());
+//					contactPO.setPostalCode(contact.getPostalCode());
+//					contactPO.setPrimaryContact(contact.isPrimaryContact());
+//					contactPO.setTelephoneNumbers(contact.getTelephoneNumbers());
+//					contactPO.setType(contact.getType());
+//					contactPO.setWebsite(contact.getWebsite());
+//					contacts.add(contactPO);
+//				}
+//			}
+//			po.setContacts(contacts);
+//		}
 		
 		po.setMemberRegNo(branch.getMemberRegNo());
 		po.setName(branch.getName());

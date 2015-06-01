@@ -75,8 +75,8 @@ public class ApplicationFormDaoHelper {
 			Category category = applicationDao.findApplicationCategory(type);
 			
 			if(category==null){
-				throw new NullPointerException("Application Category "+type+" not found");
-				//throw new ServiceException(ErrorCodes.NOTFOUND,"Application Category '"+type+"'");
+				//throw new NullPointerException("Application Category "+type+" not found");
+				throw new ServiceException(ErrorCodes.NOTFOUND,"Application Category '"+type+"'");
 			}
 			
 			Map<String,Object> line  = new HashMap<String, Object>();
